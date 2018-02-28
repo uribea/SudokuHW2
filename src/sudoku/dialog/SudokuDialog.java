@@ -64,9 +64,11 @@ public class SudokuDialog extends JFrame {
      * @param x 0-based row index of the clicked square.
      * @param y 0-based column index of the clicked square.
      */
+    int[] values = { -1, -1, -1};
     private void boardClicked(int x, int y) {
         // WRITE YOUR CODE HERE ...
-        //
+        values[0]= x;
+        values[1]= y;
     	showMessage(String.format("Board clicked: x = %d, y = %d",  x, y));
     }
     
@@ -77,6 +79,12 @@ public class SudokuDialog extends JFrame {
     private void numberClicked(int number) {
         // WRITE YOUR CODE HERE ...
         //
+    	if(values[0]!= -1 && values[1] != -1){
+    		values[2] = number;
+    		board.setCoordinates(values);
+    		values[0] = -1;
+    		values[1] = -1;
+    	}
         showMessage("Number clicked: " + number);
     }
     
@@ -88,8 +96,7 @@ public class SudokuDialog extends JFrame {
      * @param size Requested puzzle size, either 4 or 9.
      */
     private void newClicked(int size) {
-        // WRITE YOUR CODE HERE ...
-        //
+       	board = new Board(size); //FIXME ADDED
         showMessage("New clicked: " + size);
     }
 
@@ -103,6 +110,7 @@ public class SudokuDialog extends JFrame {
 
     /** Configure the UI. */
     private void configureUI() {
+    	
         setIconImage(createImageIcon("sudoku.png").getImage());
         setLayout(new BorderLayout());
         
@@ -123,6 +131,7 @@ public class SudokuDialog extends JFrame {
       
     /** Create a control panel consisting of new and number buttons. */
     private JPanel makeControlPanel() {
+    	
     	JPanel newButtons = new JPanel(new FlowLayout());
         JButton new4Button = new JButton("New (4x4)");
         for (JButton button: new JButton[] { new4Button, new JButton("New (9x9)") }) {
@@ -136,7 +145,7 @@ public class SudokuDialog extends JFrame {
         
     	// buttons labeled 1, 2, ..., 9, and X.
     	JPanel numberButtons = new JPanel(new FlowLayout());
-    	int maxNumber = board.size() + 1;
+    	int maxNumber = board.size + 1; //FIXME was a getter?
     	for (int i = 1; i <= maxNumber; i++) {
             int number = i % maxNumber;
             JButton button = new JButton(number == 0 ? "X" : String.valueOf(number));

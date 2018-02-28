@@ -3,9 +3,12 @@ package sudoku.dialog;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import sudoku.model.Board;
@@ -33,6 +36,7 @@ public class BoardPanel extends JPanel {
 	
     /** Background color of the board. */
 	private static final Color boardColor = new Color(247, 223, 150);
+	private static final Color lineColor = new Color(0, 0, 0);
 
     /** Board to be displayed. */
     private Board board;
@@ -78,7 +82,8 @@ public class BoardPanel extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g); 
-
+        
+        
         // determine the square size
         Dimension dim = getSize();
         squareSize = Math.min(dim.width, dim.height) / board.size;
@@ -90,6 +95,39 @@ public class BoardPanel extends JPanel {
 
         // WRITE YOUR CODE HERE ...
         // i.e., draw grid and squares.
-    }
+        //DANNY WORKING ON THIS
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(lineColor);
+        
+        Line2D lin = new Line2D.Float();
+        
+        //lin.setLine(arg0);
+       
 
+		int size = board.getSize();
+		int subsize = board.getSubsize();
+		JLabel n = new JLabel(" ");
+		
+		for(int i = 0; i <= size * squareSize; i += squareSize){
+			lin.setLine(0, i, squareSize * board.size, i);
+			g2.draw(lin);
+			lin.setLine(i, 0, i, squareSize * board.size);
+			g2.draw(lin);
+			if((i/squareSize)%subsize == 0){
+				lin.setLine(0, i+1, squareSize * board.size, i+1);
+				g2.draw(lin);
+				lin.setLine(i+1, 0, i+1, squareSize * board.size);
+				g2.draw(lin);
+				lin.setLine(0, i-1, squareSize * board.size, i-1);
+				g2.draw(lin);
+				lin.setLine(i-1, 0, i-1, squareSize * board.size);
+				g2.draw(lin);
+				
+				
+		
+			}
+		}
+	
+
+    }
 }
