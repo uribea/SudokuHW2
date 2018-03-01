@@ -71,6 +71,12 @@ public class Board {
 		return subsize;
 	}
 	public int[][] getBoard(){
+		for(int i = 0; i <board.length; i++){
+			for(int j = 0; j <board.length; j++)
+				System.out.print(board[i][j] + "-");
+		System.out.println();
+		}
+		System.out.println("reeeeeeeeeeeeeeee");
 		return board;
 	}
 	
@@ -79,17 +85,18 @@ public class Board {
 		if (c[0] > size || c[1] > size ||c[2] > size){
 			return false;
 		}
-		for(int i = 0; i < lockedStartingValues.length; ++i){
+		if(c[2] == 0) return true;
+		/*for(int i = 0; i < lockedStartingValues.length; ++i){
 			if (c[0] == lockedStartingValues[0][i] && c[1] == lockedStartingValues[1][i])
 				return false;
-		}
+		}*/
 		for(int i = 0; i < size; ++i){ //checks vertical and horizontal
-			if (board[c[1]][i] == c[2]) return false;
-			if (board[i][c[0]] == c[2]) return false;
+			if (board[c[0]][i] == c[2]) return false;
+			if (board[i][c[1]] == c[2]) return false;
 		}
 	
-		for (int i = c[1]/(subsize) * subsize, x = 0; x < subsize; ++x, ++i){ //checks subregion
-			for (int j = c[0]/subsize * subsize, y = 0; y < subsize; ++y, ++j ){
+		for (int i = c[0]/(subsize) * subsize, x = 0; x < subsize; ++x, ++i){ //checks subregion
+			for (int j = c[1]/subsize * subsize, y = 0; y < subsize; ++y, ++j ){
 				if(board[i][j] == c[2]) return false;
 			}
 		}
@@ -100,7 +107,14 @@ public class Board {
 	public void setCoordinates(int[] c){
 		if (c[2] == 0) emptySquares++;
 		if (board[c[1]][c[0]] == 0) emptySquares--;
-		board[c[1]][c[0]] = c[2];
+		System.out.println("boy"+c[0]+" "+c[1]+" "+c[2]);
+		if(validCoordinates(c))
+			board[c[1]][c[0]] = c[2];
+		for(int i = 0; i <board.length; i++){
+			for(int j = 0; j <board.length; j++)
+				System.out.print(board[i][j] + "-");
+		System.out.println();
+		}
 	}
 	
 	public boolean isSolved() {

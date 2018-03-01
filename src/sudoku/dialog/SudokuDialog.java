@@ -51,6 +51,7 @@ public class SudokuDialog extends JFrame {
         super("Sudoku");
         setSize(dim);
         board = new Board(9);
+        System.out.println("new");
         boardPanel = new BoardPanel(board, this::boardClicked);
         configureUI();
         //setLocationRelativeTo(null);
@@ -81,6 +82,7 @@ public class SudokuDialog extends JFrame {
         //
     	if(values[0]!= -1 && values[1] != -1){
     		values[2] = number;
+    		System.out.println(values[0]+" "+values[1]+" "+values[2]+" ");
     		board.setCoordinates(values);
     		values[0] = -1;
     		values[1] = -1;
@@ -96,8 +98,11 @@ public class SudokuDialog extends JFrame {
      * @param size Requested puzzle size, either 4 or 9.
      */
     private void newClicked(int size) {
-       	board = new Board(size); //FIXME ADDED
+       	this.board = new Board(size); //FIXME ADDED
         showMessage("New clicked: " + size);
+        //setVisible(false);
+        validate();
+        repaint();
     }
 
     /**
