@@ -13,7 +13,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import java.io.File;
+import javax.sound.sampled.*;
 
 import sudoku.model.Board;
 
@@ -22,7 +26,7 @@ import sudoku.model.Board;
  * You need to write code for three callback methods:
  * newClicked(int), numberClicked(int) and boardClicked(int,int).
  *
- * @author Yoonsik Cheon
+ * @author Yoonsik Cheon.
  */
 @SuppressWarnings("serial")
 public class SudokuDialog extends JFrame {
@@ -64,9 +68,13 @@ public class SudokuDialog extends JFrame {
      * @param x 0-based row index of the clicked square.
      * @param y 0-based column index of the clicked square.
      */
+    int[] values = { -1, -1, -1};
     private void boardClicked(int x, int y) {
-        // WRITE YOUR CODE HERE ...
-        //
+        
+    	// WRITE YOUR CODE HERE ...
+    	boardPanel.highlightBlock(x,y);
+        values[0]= x;
+        values[1]= y;
     	showMessage(String.format("Board clicked: x = %d, y = %d",  x, y));
     }
     
@@ -77,7 +85,27 @@ public class SudokuDialog extends JFrame {
     private void numberClicked(int number) {
         // WRITE YOUR CODE HERE ...
         //
+    	if(values[0]!= -1 && values[1] != -1){
+    		values[2] = number;
+    		if (board.validCoordinates(values)){
+    			board.setCoordinates(values);//send data to board
+    			values[0] = -1;
+    			values[1] = -1;
+    			boardPanel.highlightBlockOff();
+    			boardPanel.repaint();
+    		}
+    		else{
+    			errSound();
+    		}
+    	}
+    	else{
+    		errSound();
+    	}
         showMessage("Number clicked: " + number);
+        if(board.isSolved())
+        	if(JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Would You Like To Start A New Game") == 0)
+        		newClicked(board.size);
+        
     }
     
     /**
@@ -88,9 +116,12 @@ public class SudokuDialog extends JFrame {
      * @param size Requested puzzle size, either 4 or 9.
      */
     private void newClicked(int size) {
-        // WRITE YOUR CODE HERE ...
-        //
-        showMessage("New clicked: " + size);
+    	showMessage("New clicked: " + size);
+    	if( JOptionPane.showConfirmDialog(msgBar, "Are You Sure You Would You Like To Play A New Game") == 0){
+    		board = new Board(size); //FIXME ADDED
+    		boardPanel.setBoard(board);
+    	}
+    	repaint();
     }
 
     /**
@@ -103,6 +134,7 @@ public class SudokuDialog extends JFrame {
 
     /** Configure the UI. */
     private void configureUI() {
+    	
         setIconImage(createImageIcon("sudoku.png").getImage());
         setLayout(new BorderLayout());
         
@@ -123,6 +155,7 @@ public class SudokuDialog extends JFrame {
       
     /** Create a control panel consisting of new and number buttons. */
     private JPanel makeControlPanel() {
+    	
     	JPanel newButtons = new JPanel(new FlowLayout());
         JButton new4Button = new JButton("New (4x4)");
         for (JButton button: new JButton[] { new4Button, new JButton("New (9x9)") }) {
@@ -136,7 +169,7 @@ public class SudokuDialog extends JFrame {
         
     	// buttons labeled 1, 2, ..., 9, and X.
     	JPanel numberButtons = new JPanel(new FlowLayout());
-    	int maxNumber = board.size() + 1;
+    	int maxNumber = board.size + 1; //FIXME was a getter?
     	for (int i = 1; i <= maxNumber; i++) {
             int number = i % maxNumber;
             JButton button = new JButton(number == 0 ? "X" : String.valueOf(number));
@@ -162,6 +195,28 @@ public class SudokuDialog extends JFrame {
         }
         return null;
     }
+
+
+    
+        public static void errSound() {        
+            try{
+                AudioInputStream ais = AudioSystem.getAudioInputStream(new File("beep-01a.wav"));
+                Clip test = AudioSystem.getClip();  
+
+                test.open(ais);
+                test.start();
+
+                while (!test.isRunning())
+                    Thread.sleep(10);
+                while (test.isRunning())
+                    Thread.sleep(10);
+
+                test.close();
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    
 
     public static void main(String[] args) {
         new SudokuDialog();
