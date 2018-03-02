@@ -87,6 +87,10 @@ public class SudokuDialog extends JFrame {
     		values[1] = -1;
     	}
         showMessage("Number clicked: " + number);
+        if(board.isSolved())
+        	if(JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Would You Like To Start A New Game") == 0)
+        		newClicked(board.size);
+        	
     }
     
     /**
