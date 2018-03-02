@@ -16,6 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import java.io.File;
+import javax.sound.sampled.*;
+
 import sudoku.model.Board;
 
 /**
@@ -84,20 +87,25 @@ public class SudokuDialog extends JFrame {
         //
     	if(values[0]!= -1 && values[1] != -1){
     		values[2] = number;
-    		board.setCoordinates(values);//send data to board
-    		values[0] = -1;
-    		values[1] = -1;
-    		boardPanel.highlightBlockOff();
-    		boardPanel.repaint();
+    		if (board.validCoordinates(values)){
+    			board.setCoordinates(values);//send data to board
+    			values[0] = -1;
+    			values[1] = -1;
+    			boardPanel.highlightBlockOff();
+    			boardPanel.repaint();
+    		}
+    		else{
+    			errSound();
+    		}
     	}
     	else{
-    		//playsound
+    		errSound();
     	}
         showMessage("Number clicked: " + number);
         if(board.isSolved())
         	if(JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Would You Like To Start A New Game") == 0)
         		newClicked(board.size);
-        	
+        
     }
     
     /**
@@ -187,6 +195,28 @@ public class SudokuDialog extends JFrame {
         }
         return null;
     }
+
+
+    
+        public static void errSound() {        
+            try{
+                AudioInputStream ais = AudioSystem.getAudioInputStream(new File("beep-01a.wav"));
+                Clip test = AudioSystem.getClip();  
+
+                test.open(ais);
+                test.start();
+
+                while (!test.isRunning())
+                    Thread.sleep(10);
+                while (test.isRunning())
+                    Thread.sleep(10);
+
+                test.close();
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    
 
     public static void main(String[] args) {
         new SudokuDialog();

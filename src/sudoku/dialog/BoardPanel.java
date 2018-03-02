@@ -125,13 +125,12 @@ public class BoardPanel extends JPanel {
 		int size = board.getSize();
 		int subsize = board.getSubsize();
 		
-		//mayb not needed JLabel[][] n = new JLabel[size][size];
+
 		Graphics2D g3 =  (Graphics2D) g;
 		int[][] b = board.getBoard();
 		for(int i = 0; i < size; ++i){
 			for (int j = 0; j < size; ++j){
 				if (b[i][j] != 0)
-					System.out.println("---"+b[i][j]);
 					g.drawString(Integer.toString(b[i][j]),(squareSize)*(j) + (squareSize/2),(squareSize)*(i) + (squareSize/2));
 			}
 		}
