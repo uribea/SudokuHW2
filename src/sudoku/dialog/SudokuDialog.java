@@ -22,7 +22,7 @@ import sudoku.model.Board;
  * You need to write code for three callback methods:
  * newClicked(int), numberClicked(int) and boardClicked(int,int).
  *
- * @author Yoonsik Cheon
+ * @author Yoonsik Cheon.
  */
 @SuppressWarnings("serial")
 public class SudokuDialog extends JFrame {
@@ -67,7 +67,9 @@ public class SudokuDialog extends JFrame {
      */
     int[] values = { -1, -1, -1};
     private void boardClicked(int x, int y) {
-        // WRITE YOUR CODE HERE ...
+        
+    	// WRITE YOUR CODE HERE ...
+    	boardPanel.highlightBlock(x,y);
         values[0]= x;
         values[1]= y;
     	showMessage(String.format("Board clicked: x = %d, y = %d",  x, y));
@@ -86,6 +88,11 @@ public class SudokuDialog extends JFrame {
     		board.setCoordinates(values);
     		values[0] = -1;
     		values[1] = -1;
+    		boardPanel.highlightBlockOff();
+    		boardPanel.repaint();
+    	}
+    	else{
+    		//playsound
     	}
         showMessage("Number clicked: " + number);
     }

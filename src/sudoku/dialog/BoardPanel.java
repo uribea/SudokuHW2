@@ -37,6 +37,7 @@ public class BoardPanel extends JPanel {
     /** Background color of the board. */
 	private static final Color boardColor = new Color(247, 223, 150);
 	private static final Color lineColor = new Color(0, 0, 0);
+	private static final Color highlightColor = new Color(204, 204, 250);
 
     /** Board to be displayed. */
     private Board board;
@@ -51,7 +52,9 @@ public class BoardPanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
             	int xy = locateSquaree(e.getX(), e.getY());
             	if (xy >= 0) {
+            		repaint();
             		listener.clicked(xy / 100, xy % 100);
+            		repaint();
             	}
             }
         });
@@ -61,6 +64,16 @@ public class BoardPanel extends JPanel {
     public void setBoard(Board board) {
     	this.board = board;
     }
+    
+    int[] hb = {-1, -1};
+    public void highlightBlock(int x, int y){
+    	hb[0] = x;
+    	hb[1] = y;
+    }
+    public void highlightBlockOff(){
+    	hb[0] = hb [1] = -1;
+	}
+	 
     
     /**
      * Given a screen coordinate, return the indexes of the corresponding square
@@ -97,16 +110,31 @@ public class BoardPanel extends JPanel {
         // i.e., draw grid and squares.
         //DANNY WORKING ON THIS
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(lineColor);
+       
         
         Line2D lin = new Line2D.Float();
+        if (hb[0] != -1 && hb[1] != -1){
+	        Graphics g4 = (Graphics2D) g;
+	        g4.setColor(highlightColor);
+	        g4.fillRect(hb[0]*squareSize, hb[1]*squareSize,squareSize, squareSize);
+        }
+        g2.setColor(lineColor);
         
-        //lin.setLine(arg0);
-       
+
 
 		int size = board.getSize();
 		int subsize = board.getSubsize();
-		JLabel n = new JLabel(" ");
+		
+		//mayb not needed JLabel[][] n = new JLabel[size][size];
+		Graphics2D g3 =  (Graphics2D) g;
+		int[][] b = board.getBoard();
+		for(int i = 0; i < size; ++i){
+			for (int j = 0; j < size; ++j){
+				if (b[i][j] != 0)
+					System.out.println("---"+b[i][j]);
+					g.drawString(Integer.toString(b[i][j]),(squareSize)*(j) + (squareSize/2),(squareSize)*(i) + (squareSize/2));
+			}
+		}
 		
 		for(int i = 0; i <= size * squareSize; i += squareSize){
 			lin.setLine(0, i, squareSize * board.size, i);
@@ -127,7 +155,6 @@ public class BoardPanel extends JPanel {
 		
 			}
 		}
-	
-
     }
+
 }
