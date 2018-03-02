@@ -117,7 +117,7 @@ public class SudokuDialog extends JFrame {
      */
     private void newClicked(int size) {
     	showMessage("New clicked: " + size);
-    	if( JOptionPane.showConfirmDialog(msgBar, "Would You Like To Play A New Game") == 0){
+    	if( JOptionPane.showConfirmDialog(msgBar, "Are You Sure You Would You Like To Play A New Game") == 0){
     		board = new Board(size); //FIXME ADDED
     		boardPanel.setBoard(board);
     	}
