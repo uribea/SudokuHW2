@@ -20,6 +20,7 @@ import sudoku.model.Board;
  *
  * @see sudoku.model.Board
  * @author Yoonsik Cheon
+ * edited by: Daniel Almeraz and Alan Uribe
  */
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
@@ -116,32 +117,24 @@ public class BoardPanel extends JPanel {
         Dimension dim = getSize();
         squareSize = Math.min(dim.width, dim.height) / board.size;
 
-        // draw background
-        final Color oldColor = g.getColor();
+        //sets the background of the board
         g.setColor(boardColor);
         g.fillRect(0, 0, squareSize * board.size, squareSize * board.size);
 
-        // WRITE YOUR CODE HERE ...
-        // i.e., draw grid and squares.
-        //DANNY WORKING ON THIS
-        Graphics2D g2 = (Graphics2D) g;
+
+		int size = board.getSize();
+		int subsize = board.getSubsize();
        
-        
-        Line2D lin = new Line2D.Float();
+        //highlights a block if selected
         if (hb[0] != -1 && hb[1] != -1){
 	        Graphics g4 = (Graphics2D) g;
 	        g4.setColor(highlightColor);
 	        g4.fillRect(hb[0]*squareSize, hb[1]*squareSize,squareSize, squareSize);
         }
-        g2.setColor(lineColor);
         
-
-
-		int size = board.getSize();
-		int subsize = board.getSubsize();
-		
-
+   		//Puts values in their corresponding values on board
 		Graphics2D g3 =  (Graphics2D) g;
+		g3.setColor(lineColor);
 		int[][] b = board.getBoard();
 		for(int i = 0; i < size; ++i){
 			for (int j = 0; j < size; ++j){
@@ -150,6 +143,10 @@ public class BoardPanel extends JPanel {
 			}
 		}
 		
+		//Draws the lines on the board
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(lineColor);
+		Line2D lin = new Line2D.Float();
 		for(int i = 0; i <= size * squareSize; i += squareSize){
 			lin.setLine(0, i, squareSize * board.size, i);
 			g2.draw(lin);

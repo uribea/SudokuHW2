@@ -27,6 +27,7 @@ import sudoku.model.Board;
  * newClicked(int), numberClicked(int) and boardClicked(int,int).
  *
  * @author Yoonsik Cheon.
+ * edited by: Daniel Almeraz and Alan Uribe
  */
 @SuppressWarnings("serial")
 public class SudokuDialog extends JFrame {
@@ -34,6 +35,7 @@ public class SudokuDialog extends JFrame {
     /** Default dimension of the dialog. */
     private final static Dimension DEFAULT_SIZE = new Dimension(310, 430);
 
+    /** used to find the location of the image*/
     private final static String IMAGE_DIR = "/image/";
 
     /** Sudoku board. */
@@ -49,6 +51,9 @@ public class SudokuDialog extends JFrame {
     public SudokuDialog() {
     	this(DEFAULT_SIZE);
     }
+    
+    /** holds the values being attempted to be added to the board*/
+    int[] values = { -1, -1, -1};
     
     /** Create a new dialog of the given screen dimension. */
     public SudokuDialog(Dimension dim) {
@@ -68,8 +73,7 @@ public class SudokuDialog extends JFrame {
      * @param x 0-based row index of the clicked square.
      * @param y 0-based column index of the clicked square.
      */
-    int[] values = { -1, -1, -1};
-    private void boardClicked(int x, int y) {
+     private void boardClicked(int x, int y) {
         
     	// WRITE YOUR CODE HERE ...
     	boardPanel.highlightBlock(x,y);
@@ -83,12 +87,11 @@ public class SudokuDialog extends JFrame {
      * @param number Clicked number (1-9), or 0 for "X".
      */
     private void numberClicked(int number) {
-        // WRITE YOUR CODE HERE ...
-        //
     	if(values[0]!= -1 && values[1] != -1){
     		values[2] = number;
     		if (board.validCoordinates(values)){
     			board.setCoordinates(values);//send data to board
+    			//rest values
     			values[0] = -1;
     			values[1] = -1;
     			boardPanel.highlightBlockOff();
@@ -169,7 +172,7 @@ public class SudokuDialog extends JFrame {
         
     	// buttons labeled 1, 2, ..., 9, and X.
     	JPanel numberButtons = new JPanel(new FlowLayout());
-    	int maxNumber = board.size + 1; //FIXME was a getter?
+    	int maxNumber = board.size + 1;
     	for (int i = 1; i <= maxNumber; i++) {
             int number = i % maxNumber;
             JButton button = new JButton(number == 0 ? "X" : String.valueOf(number));
@@ -187,7 +190,9 @@ public class SudokuDialog extends JFrame {
         return content;
     }
 
-    /** Create an image icon from the given image file. */
+    /** Create an image icon from the given image file.
+     *  @param filename 
+     */
     private ImageIcon createImageIcon(String filename) {
         URL imageUrl = getClass().getResource(IMAGE_DIR + filename);
         if (imageUrl != null) {
@@ -198,26 +203,24 @@ public class SudokuDialog extends JFrame {
 
 
     /** Play error sound*/
-        public static void errSound() {        
-            try{
-                AudioInputStream audioIS = AudioSystem.getAudioInputStream(new File("beep-01a.wav"));
-                Clip sClip = AudioSystem.getClip();  
+    private static void errSound() {        
+    	try{
+    		AudioInputStream audioIS = AudioSystem.getAudioInputStream(new File("beep-01a.wav"));
+            Clip sClip = AudioSystem.getClip();  
+            sClip.open(audioIS);
+            sClip.start();
 
-                sClip.open(audioIS);
-                sClip.start();
-
-                while (!sClip.isRunning())
-                    Thread.sleep(10);
-                while (sClip.isRunning())
-                    Thread.sleep(10);
-
+        while (!sClip.isRunning())
+        	Thread.sleep(10);
+            while (sClip.isRunning())
+            	Thread.sleep(10);
                 sClip.close();
             }catch(Exception ex){
                 ex.printStackTrace();
             }
         }
     
-
+     /** main method */
     public static void main(String[] args) {
         new SudokuDialog();
     }
