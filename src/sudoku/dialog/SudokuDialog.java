@@ -197,21 +197,21 @@ public class SudokuDialog extends JFrame {
     }
 
 
-    
+    /** Play error sound*/
         public static void errSound() {        
             try{
-                AudioInputStream ais = AudioSystem.getAudioInputStream(new File("beep-01a.wav"));
-                Clip test = AudioSystem.getClip();  
+                AudioInputStream audioIS = AudioSystem.getAudioInputStream(new File("beep-01a.wav"));
+                Clip sClip = AudioSystem.getClip();  
 
-                test.open(ais);
-                test.start();
+                sClip.open(audioIS);
+                sClip.start();
 
-                while (!test.isRunning())
+                while (!sClip.isRunning())
                     Thread.sleep(10);
-                while (test.isRunning())
+                while (sClip.isRunning())
                     Thread.sleep(10);
 
-                test.close();
+                sClip.close();
             }catch(Exception ex){
                 ex.printStackTrace();
             }

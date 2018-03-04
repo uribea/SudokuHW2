@@ -1,6 +1,12 @@
 package sudoku.model;
 
-//Code By: Daniel Almeraz
+/**
+ * Model class for the Sudoku program 
+ * 
+ * @author daniel
+ *
+ */
+
 public class Board {
 	public int size;
 	private int emptySquares;
@@ -8,20 +14,32 @@ public class Board {
 	private int subsize;  //length of a subregion
 	private int[][] lockedStartingValues;
 	
+	/**
+	 * Constructor for board.
+	 * Default size of four.
+	 */
 	public Board(){
 		this(4);
 		subsize = 2;
 		emptySquares = 16;
 		board = new int[4][4];
 	}
-
+	
+	/**
+	 * Constructor for board.
+	 * @param size the size of the board desired. 
+	 */
 	public Board(int size){
 		this.size = size;
 		subsize = (int)Math.sqrt((double)size);
 		emptySquares = size * size;
 		board = new int[size][size];
 	}
-	
+	/**
+	 * Constructor for board.
+	 * @param size the size of the board desired. 
+	 * @param info a string given on the format provided through the class website, sets locked starting values
+	 */
 	public Board(int size, String info){
 		this.size = size;
 		subsize = (int)Math.sqrt((double)size);
@@ -71,19 +89,14 @@ public class Board {
 		return subsize;
 	}
 	public int[][] getBoard(){
-		for(int i = 0; i <board.length; i++){
-						for(int j = 0; j <board.length; j++)
-							System.out.print(board[i][j] + "-");
-					System.out.println();
-					}
-			System.out.println("reeeeeeeeeeeeeeee");
+
 		return board;
 	}
 	
 	
 	public boolean validCoordinates(int[] c){ //CHECKS COORDINATES
 		if (c[0] > size || c[1] > size ||c[2] > size){
-			System.out.println();
+			
 			return false;
 		}
 		if(c[2] == 0) return true;

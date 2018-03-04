@@ -34,9 +34,16 @@ public class BoardPanel extends JPanel {
 		void clicked(int x, int y);
 	}
 	
+	/** Which block index to be highlighted, {-1, -1} if non */
+	private int[] hb = {-1, -1};
+	
     /** Background color of the board. */
 	private static final Color boardColor = new Color(247, 223, 150);
+	
+	/** Color of the lines in the board. */
 	private static final Color lineColor = new Color(0, 0, 0);
+	
+	/** Color of highlighted selected block in the board. */
 	private static final Color highlightColor = new Color(204, 204, 250);
 
     /** Board to be displayed. */
@@ -65,11 +72,19 @@ public class BoardPanel extends JPanel {
     	this.board = board;
     }
     
-    int[] hb = {-1, -1};
+    /** 
+     * Getter for which blocks to highlight
+     * @param x 0-based column index of the highlighted square
+     * @param y 0-based column index of the highlighted square
+     */
     public void highlightBlock(int x, int y){
     	hb[0] = x;
     	hb[1] = y;
     }
+    
+    /**
+     * Turns off any block that is being highlighted.
+     */
     public void highlightBlockOff(){
     	hb[0] = hb [1] = -1;
 	}
