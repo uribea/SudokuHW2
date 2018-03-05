@@ -97,17 +97,20 @@ public class Board {
 		}
 	}
 
-	/** getter for size*/
+	/** getter for size
+	 * @return the size in 1d of the board*/
 	public int getSize(){
 		return size;
 	}
 	
-	/**getter for subsize*/
+	/**getter for subsize
+	 * @return the subsize in 1d of the board*/
 	public int getSubsize(){
 		return subsize;
 	}
 	
-	/** getter for board*/
+	/** getter for board
+	 * @return the boards 2d array*/
 	public int[][] getBoard(){
 
 		return board;

@@ -53,7 +53,9 @@ public class BoardPanel extends JPanel {
     /** Width and height of a square in pixels. */
     private int squareSize;
 
-    /** Create a new board panel to display the given board. */
+    /** Create a new board panel to display the given board.
+     * @param board the object of board
+     * @param listener listens for a click */
     public BoardPanel(Board board, ClickListener listener) {
         this.board = board;
         addMouseListener(new MouseAdapter() {
@@ -68,7 +70,8 @@ public class BoardPanel extends JPanel {
         });
     }
 
-    /** Set the board to be displayed. */
+    /** Set the board to be displayed.
+     * @param board object of the sudoku board */
     public void setBoard(Board board) {
     	this.board = board;
     }

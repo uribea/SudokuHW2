@@ -55,7 +55,9 @@ public class SudokuDialog extends JFrame {
     /** holds the values being attempted to be added to the board*/
     int[] values = { -1, -1, -1};
     
-    /** Create a new dialog of the given screen dimension. */
+    /** Create a new dialog of the given screen dimension. 
+     * @param dim dimensions
+     * */
     public SudokuDialog(Dimension dim) {
         super("Sudoku");
         setSize(dim);
@@ -105,9 +107,11 @@ public class SudokuDialog extends JFrame {
     		errSound();
     	}
         showMessage("Number clicked: " + number);
-        if(board.isSolved())
-        	if(JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Would You Like To Start A New Game") == 0)
-        		newClicked(board.size);
+        if(board.isSolved()){
+        	int answer = JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Continue?");
+        	if( answer == 0) newClicked(board.size);
+        	else if ( answer == 1) System.exit(0);
+        }
         
     }
     
@@ -220,7 +224,10 @@ public class SudokuDialog extends JFrame {
             }
         }
     
-     /** main method */
+     /**
+      *  main method 
+      * @param args array of string arguments
+      * */
     public static void main(String[] args) {
         new SudokuDialog();
     }
