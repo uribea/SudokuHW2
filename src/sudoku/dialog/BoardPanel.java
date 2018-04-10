@@ -7,8 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import sudoku.model.Board;
@@ -34,6 +32,7 @@ public class BoardPanel extends JPanel {
 		 */
 		void clicked(int x, int y);
 	}
+	
 	
 	/** Which block index to be highlighted, {-1, -1} if non */
 	private int[] hb = {-1, -1};

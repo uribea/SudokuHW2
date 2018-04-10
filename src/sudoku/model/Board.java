@@ -23,7 +23,7 @@ public class Board {
 	
 	/** stores initial values.
 	 * Used to make sure values inside can't be changed*/
-	private int[][] lockedStartingValues;
+	private int[][] lsValue;
 	
 	/**
 	 * Constructor for board.
@@ -40,62 +40,71 @@ public class Board {
 	 * Constructor for board.
 	 * @param size the size of the board desired. 
 	 */
-	public Board(int size){
-		this.size = size;
-		subsize = (int)Math.sqrt((double)size);
-		emptySquares = size * size;
-		board = new int[size][size];
-	}
+	//public Board(int size){
+		//this.size = size;
+		//subsize = (int)Math.sqrt((double)size);
+		//emptySquares = size * size;
+		//board = new int[size][size];
+	//}
 	/**
 	 * Constructor for board.
 	 * @param size the size of the board desired. 
 	 * @param info a string given on the format provided through the class website, sets locked starting values
 	 */
-	public Board(int size, String info){
+	public Board(int size){
 		this.size = size;
 		subsize = (int)Math.sqrt((double)size);
 		emptySquares = size * size;
 		board = new int[size][size];
-		int infoValues = infoValues(info);
-		lockedStartingValues = new int[3][infoValues];
+		int lsValuesNum = numlsValues();
+		lsValue = new int[3][lsValuesNum];//0=x, 1=y, 2=v
+		solve();
+		removeValues(lsValuesNum);
 		
-		storeInfo(info);
-		
-		setFirstCoordinates();
+		setLockedCoordinates(lsValuesNum);
 		
 	}
 	
 	/** gives the amount of preset coordinates*/
-	private int infoValues(String info){
-		int counter = 0;
-		for(int i = 0; i < info.length(); ++i)
-			if(info.charAt(i) == 'x')
-				counter++;
-		return counter;
+	private int numlsValues(){
+		return 12 +(int)(Math.random() *8);
 	}
 	
 	/**converts the string preset values into an array */
-	private void storeInfo(String info){
-		int arrayIndex = 0;
-		for (int i = 0; i < info.length(); ++i){
-			if (info.charAt(i) == 'x')
-				lockedStartingValues[0][arrayIndex] = ((int) info.charAt(i+3) - 48);
-			else if (info.charAt(i) == 'y')
-				lockedStartingValues[1][arrayIndex] = ((int) info.charAt(i+3) - 48);
-			else if (info.charAt(i) == 'v'){
-				lockedStartingValues[2][arrayIndex] = ((int) info.charAt(i+7) - 48);
-				arrayIndex++;
+	private void removeValues(int num){
+		int i = size*size - num;
+		int xT, yT; //temp for x and y coordinates
+		while(i < 0){
+			xT = (int)Math.random()*size;
+			yT = (int)Math.random()*size;
+			if(board[xT][yT] == 0){
+				
+			}
+			else{
+				board[xT][yT] = 0;
+				i--;
 			}
 		}
+
+		
 	}
 	
 	/** it sets the preset values*/
-	private void setFirstCoordinates(){
-		for(int i = 0; i < lockedStartingValues[0].length; ++i){
-			board[lockedStartingValues[1][i]][lockedStartingValues[0][i]] = lockedStartingValues[2][i];
-			emptySquares--;
+	private void setLockedCoordinates(int lsValuesNum){
+		int x = 0;
+		for(int i = 0; i < size; ++i){
+			for(int j = 0; j < size; ++j){
+				if(board[i][j] != 0){
+					lsValue[0][x] = i;
+					lsValue[1][x] = j;
+					lsValue[2][x] = board[i][j];
+					
+				}
+			}
 		}
+
 	}
+
 
 	/** getter for size
 	 * @return the size in 1d of the board*/
@@ -142,7 +151,43 @@ public class Board {
 		}
 		return true;
 	}
-	
+	//MISSING JAVADOC
+	public boolean solve(){
+		return solve(0, 0);
+	}
+	//MISSING JAVADOC
+	public boolean solve(int x, int y){
+		int xN, yN; //new x and y
+		if(x == size-1){
+			xN = 0; 
+			yN = y + 1;
+		}
+		else{
+			xN = x + 1;
+			yN = y;
+		}
+
+		if(isSolved()) 	return true;
+		else{
+			for (int i = 1; i <= size; ++i){
+				int[] ca = {x,y,i};
+				if (validCoordinates(ca)){
+					setCoordinates(ca);
+					if(solve(xN, yN)) return true;
+					else{
+						ca[0] = x;
+						ca[1] = y;
+						ca[2] = 0;
+						setCoordinates(ca);
+					}
+				}
+				
+			}
+		}
+		return false;
+		
+	}
+
 	/** sets the coordinates on the board after the validation is passed
 	 *  @param c the coordinates being added
 	 */
