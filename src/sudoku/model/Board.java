@@ -36,6 +36,7 @@ public class Board {
 		subsize = 2;
 		emptySquares = 16;
 		board = new int[4][4];
+		
 	}
 	
 	/**
@@ -54,18 +55,21 @@ public class Board {
 	 * @param info a string given on the format provided through the class website, sets locked starting values
 	 */
 	public Board(int size){
+		Solver solver = new Solver(Board.this, size);
 		starting = true;
 		this.size = size;
 		subsize = (int)Math.sqrt((double)size);
 		emptySquares = (size * size);
 		board = new int[size][size];
+		
 		int lsValuesNum = numlsValues();
 		lsValue = new boolean[size][size];//0=x, 1=y, 2=v
-		solve();
-		removeValues(lsValuesNum);
-		
+		solver.solve();
+		removeValues(lsValuesNum);//PROBLEM HERE
+	
 		setLockedCoordinates(lsValuesNum);
 		emptySquares = (size * size) - lsValuesNum;
+		
 		starting = false;
 		//printArray();
 		
@@ -86,10 +90,8 @@ public class Board {
 		int i = size*size - num;
 		int xT, yT; //temp for x and y coordinates
 		while(i > 0){
-			
 			xT = (int)(Math.random()*size);
 			yT = (int)(Math.random()*size);
-			//System.out.println(xT + " " + yT);
 			if(board[xT][yT] == 0){
 				
 			}
@@ -99,7 +101,11 @@ public class Board {
 			}
 		}		
 	}
-	
+	public void setBoardArray(int[][] a){
+		for (int i = 0; i < size; ++i)
+			for(int j = 0; j < size; ++j)
+				board[i][j] = a[i][j];
+	}
 	/** it sets the preset values*/
 	private void setLockedCoordinates(int lsValuesNum){
 		//int x = 0;
@@ -163,42 +169,8 @@ public class Board {
 		}
 		return true;
 	}
-	//MISSING JAVADOC
-	public boolean solve(){
-		return solve(0, 0);
-	}
-	//MISSING JAVADOC
-	public boolean solve(int x, int y){
-		int xN, yN; //new x and y
-		if(x == size-1){
-			xN = 0; 
-			yN = y + 1;
-		}
-		else{
-			xN = x + 1;
-			yN = y;
-		}
 
-		if(isSolved()) 	return true;
-		else{
-			for (int i = 1; i <= size; ++i){
-				int[] ca = {x,y,i};
-				if (validCoordinates(ca)){
-					setCoordinates(ca);
-					if(solve(xN, yN)) return true;
-					else{
-						ca[0] = x;
-						ca[1] = y;
-						ca[2] = 0;
-						setCoordinates(ca);
-					}
-				}
-				
-			}
-		}
-		return false;
-		
-	}
+
 
 	/** sets the coordinates on the board after the validation is passed
 	 *  @param c the coordinates being added
