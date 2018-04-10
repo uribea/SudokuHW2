@@ -38,13 +38,15 @@ public class BoardPanel extends JPanel {
 	private int[] hb = {-1, -1};
 	
     /** Background color of the board. */
-	private static final Color boardColor = new Color(247, 223, 150);
+	private static final Color boardColor = new Color(255, 235, 180);
 	
 	/** Color of the lines in the board. */
 	private static final Color lineColor = new Color(0, 0, 0);
 	
 	/** Color of highlighted selected block in the board. */
 	private static final Color highlightColor = new Color(204, 204, 250);
+	
+	private static final Color lockedColor = new Color(250, 210, 160);
 
     /** Board to be displayed. */
     private Board board;
@@ -128,20 +130,29 @@ public class BoardPanel extends JPanel {
 		int subsize = board.getSubsize();
        
         //highlights a block if selected
+		Graphics g4 = (Graphics2D) g;
         if (hb[0] != -1 && hb[1] != -1){
-	        Graphics g4 = (Graphics2D) g;
+	        
 	        g4.setColor(highlightColor);
 	        g4.fillRect(hb[0]*squareSize, hb[1]*squareSize,squareSize, squareSize);
         }
-        
+        boolean[][] l = board.getLocked();
+        g4.setColor(lockedColor);
+        for(int i = 0; i < size; ++i){
+        	for(int j = 0; j< size; ++j){
+        		if(l[i][j])
+        			g4.fillRect(j*squareSize, i*squareSize,squareSize, squareSize)	;
+        	}
+        }
    		//Puts values in their corresponding values on board
 		Graphics2D g3 =  (Graphics2D) g;
 		g3.setColor(lineColor);
 		int[][] b = board.getBoard();
+		
 		for(int i = 0; i < size; ++i){
 			for (int j = 0; j < size; ++j){
 				if (b[i][j] != 0)
-					g.drawString(Integer.toString(b[i][j]),(squareSize)*(j) + (squareSize/2),(squareSize)*(i) + (squareSize/2));
+					g.drawString(Integer.toString(b[i][j]),(squareSize)*(j)-3 + (squareSize/2),(squareSize)*(i)+3 + (squareSize/2));
 			}
 		}
 		

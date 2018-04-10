@@ -23,7 +23,9 @@ public class Board {
 	
 	/** stores initial values.
 	 * Used to make sure values inside can't be changed*/
-	private int[][] lsValue;
+	private boolean[][] lsValue;
+	
+	boolean starting;
 	
 	/**
 	 * Constructor for board.
@@ -52,31 +54,42 @@ public class Board {
 	 * @param info a string given on the format provided through the class website, sets locked starting values
 	 */
 	public Board(int size){
+		starting = true;
 		this.size = size;
 		subsize = (int)Math.sqrt((double)size);
-		emptySquares = size * size;
+		emptySquares = (size * size);
 		board = new int[size][size];
 		int lsValuesNum = numlsValues();
-		lsValue = new int[3][lsValuesNum];//0=x, 1=y, 2=v
+		lsValue = new boolean[size][size];//0=x, 1=y, 2=v
 		solve();
 		removeValues(lsValuesNum);
 		
 		setLockedCoordinates(lsValuesNum);
+		emptySquares = (size * size) - lsValuesNum;
+		starting = false;
+		//printArray();
 		
+	}
+	public void printArray(){
+		for(int i = 0; i < size; ++i)
+			for(int j = 0; j < size; ++j)
+				System.out.println(board[i][j]+ " ");
 	}
 	
 	/** gives the amount of preset coordinates*/
 	private int numlsValues(){
-		return 12 +(int)(Math.random() *8);
+		return 22 +(int)(Math.random() *8);
 	}
 	
 	/**converts the string preset values into an array */
 	private void removeValues(int num){
 		int i = size*size - num;
 		int xT, yT; //temp for x and y coordinates
-		while(i < 0){
-			xT = (int)Math.random()*size;
-			yT = (int)Math.random()*size;
+		while(i > 0){
+			
+			xT = (int)(Math.random()*size);
+			yT = (int)(Math.random()*size);
+			//System.out.println(xT + " " + yT);
 			if(board[xT][yT] == 0){
 				
 			}
@@ -84,21 +97,16 @@ public class Board {
 				board[xT][yT] = 0;
 				i--;
 			}
-		}
-
-		
+		}		
 	}
 	
 	/** it sets the preset values*/
 	private void setLockedCoordinates(int lsValuesNum){
-		int x = 0;
+		//int x = 0;
 		for(int i = 0; i < size; ++i){
 			for(int j = 0; j < size; ++j){
 				if(board[i][j] != 0){
-					lsValue[0][x] = i;
-					lsValue[1][x] = j;
-					lsValue[2][x] = board[i][j];
-					
+					lsValue[i][j] = true;
 				}
 			}
 		}
@@ -124,6 +132,9 @@ public class Board {
 
 		return board;
 	}
+	public boolean[][] getLocked(){
+		return lsValue;
+	}
 	
 	/**Checks if coordinates attempting to be entered in the board are valid
 	 * @param c the coordinates being attempted to be added
@@ -134,14 +145,15 @@ public class Board {
 			return false;
 		}
 		if(c[2] == 0) return true;
-		/*for(int i = 0; i < lockedStartingValues.length; ++i){
-			if (c[0] == lockedStartingValues[0][i] && c[1] == lockedStartingValues[1][i])
+		if(starting == false){
+			if(lsValue[c[1]][c[0]])
 				return false;
-		}*/
-		for(int i = 0; i < size; ++i){ //checks vertical and horizontal
-			if (board[c[1]][i] == c[2]) return false;
-			if (board[i][c[0]] == c[2]) return false;
 		}
+			for(int i = 0; i < size; ++i){ //checks vertical and horizontal
+				if (board[c[1]][i] == c[2]) return false;
+				if (board[i][c[0]] == c[2]) return false;
+			}
+		
 		
 		 //checks subregion
 		for (int i = c[1]/(subsize) * subsize, x = 0; x < subsize; ++x, ++i){
