@@ -53,9 +53,10 @@ public class Solver {
 		return false;
 		
 	}
-	//public boolean isSolvable(){
-		//Board tempBoard = new Board();
-		//tempBoard.setBoardArray(board);
-		//return tempBoard.solve();
-	//}
+	public boolean isSolvable(){
+		Board tempBoard = new Board(size);
+		tempBoard.setBoardArray(board.getBoard());
+		Solver tempSolver = new Solver(tempBoard, tempBoard.getSize());
+		return tempSolver.solve();
+	}
 }

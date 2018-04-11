@@ -23,7 +23,7 @@ public class Board {
 	
 	/** stores initial values.
 	 * Used to make sure values inside can't be changed*/
-	private boolean[][] lsValue;
+	private boolean[][] lsValue;  //ls = locked starting
 	
 	boolean starting;
 	
