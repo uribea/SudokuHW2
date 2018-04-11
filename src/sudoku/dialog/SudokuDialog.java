@@ -19,6 +19,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
 import java.io.File;
 import javax.sound.sampled.*;
@@ -42,6 +43,8 @@ public class SudokuDialog extends JFrame {
     /** used to find the location of the image*/
     private final static String IMAGE_DIR = "/image/";
 
+    
+    
     /** Sudoku board. */
     private Board board;
 
@@ -148,15 +151,24 @@ public class SudokuDialog extends JFrame {
     	
         setIconImage(createImageIcon("sudoku.png").getImage());
         setLayout(new BorderLayout());
+        JPanel menu = makeMenus();
+        
         
         JPanel buttons = makeControlPanel();
         // boarder: top, left, bottom, right
         buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
-        add(buttons, BorderLayout.NORTH);
+        menu.add(buttons, BorderLayout.SOUTH);
         
+        //menu.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        add(menu, BorderLayout.NORTH);
+        
+
         JPanel board = new JPanel();
         board.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
         board.setLayout(new GridLayout(1,1));
+        
+        
+        
         board.add(boardPanel);
         add(board, BorderLayout.CENTER);
         
@@ -164,9 +176,80 @@ public class SudokuDialog extends JFrame {
         add(msgBar, BorderLayout.SOUTH);
     }
       
-    /** Create a control panel consisting of new and number buttons. */
-    private JPanel makeControlPanel() {
+
+	private JPanel makeMenus() {
+    	JMenuBar menubar = new JMenuBar();
+        JMenu menu = new JMenu("A Menu");
+        //menu.setLayout(new BorderLayout(menu, BorderLayout.NORTH));
+        menu.setMnemonic(KeyEvent.VK_A);
+        menu.getAccessibleContext().setAccessibleDescription(
+                "The only menu in this program that has menu items");
+
+        menubar.add(menu);//, BorderLayout.NORTH);
+        menubar.setAlignmentX(LEFT_ALIGNMENT);
+       // menubar.setLayout(new BoxLayout(menubar, BoxLayout.PAGE_AXIS));
     	
+        
+        
+        /*JToolBar toolbar = new JToolBar("Menu toolbar");
+        JButton newchoiceButton = new JButton("choice");
+        toolbar.add(newchoiceButton);
+        */
+        JToolBar toolbar = new JToolBar();
+        toolbar.setFloatable(false);
+        //panel.add(toolBar, BorderLayout.PAGE_START);
+    	// new9Game;
+    	JButton new9Game = new JButton(createImageIcon("play.png"));
+		new9Game.setToolTipText("Play new game");
+		toolbar.add(new9Game);
+		
+		JButton solveGame = new JButton(createImageIcon("redchek.png"));
+		solveGame.setToolTipText("Solve current game");
+		toolbar.add(solveGame);
+		
+		JButton solveable = new JButton(createImageIcon("checkmark.png"));
+		solveable.setToolTipText("Checks if current board is solveable");
+		toolbar.add(solveable);
+		
+		for (JButton button: new JButton[] { new9Game, solveGame, solveable }) {
+        	button.setFocusPainted(false);
+            button.addActionListener(e -> {
+            	if(e.getSource() == new9Game)
+            		newClicked(9);
+            	if(e.getSource() == solveGame)
+            		solve();
+            	if(e.getSource() == solveable)
+            		isSolvable();
+//                newClicked(e.getSource() == new9Game ? 9 : 0);
+            });
+            //newButtons.add(button);
+    	}
+		
+        
+        JPanel Menus = new JPanel(new BorderLayout());
+        //Menus.setLayout(new BoxLayout(Menus, BoxLayout.PAGE_AXIS));
+        
+        Menus.add(menubar, BorderLayout.NORTH);
+        Menus.add(toolbar, BorderLayout.CENTER);
+        
+        return Menus;
+        
+	}
+
+	private void isSolvable() {
+		// TODO Auto-generated method stub
+		showMessage("is Solvable");
+		
+	}
+
+	private void solve() {
+		// TODO Auto-generated method stub
+		showMessage("Solve");
+	}
+
+	/** Create a control panel consisting of new and number buttons. */
+    private JPanel makeControlPanel() {
+
     	JPanel newButtons = new JPanel(new FlowLayout());
         JButton new4Button = new JButton("New (4x4)");
         for (JButton button: new JButton[] { new4Button, new JButton("New (9x9)") }) {
@@ -193,7 +276,8 @@ public class SudokuDialog extends JFrame {
 
     	JPanel content = new JPanel();
     	content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
-        content.add(newButtons);
+
+    	content.add(newButtons);
         content.add(numberButtons);
         return content;
     }
