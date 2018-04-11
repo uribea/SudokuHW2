@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
@@ -20,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 import java.io.File;
 import javax.sound.sampled.*;
@@ -179,18 +181,46 @@ public class SudokuDialog extends JFrame {
 
 	private JPanel makeMenus() {
     	JMenuBar menubar = new JMenuBar();
-        JMenu menu = new JMenu("A Menu");
+        JMenu menu = new JMenu("GAME");
         //menu.setLayout(new BorderLayout(menu, BorderLayout.NORTH));
         menu.setMnemonic(KeyEvent.VK_A);
-        menu.getAccessibleContext().setAccessibleDescription(
-                "The only menu in this program that has menu items");
+        menu.getAccessibleContext().setAccessibleDescription("Game Menu");
 
         menubar.add(menu);//, BorderLayout.NORTH);
-        menubar.setAlignmentX(LEFT_ALIGNMENT);
-       // menubar.setLayout(new BoxLayout(menubar, BoxLayout.PAGE_AXIS));
-    	
         
+        JMenuItem menuPlay = new JMenuItem("New Game", KeyEvent.VK_N);
+		menuPlay.setIcon(createImageIcon("play.png"));
+		menuPlay.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+		menuPlay.getAccessibleContext().setAccessibleDescription("Play a new game");
         
+		JMenuItem meSolvable = new JMenuItem("Check if Game Solvable", KeyEvent.VK_C);
+		meSolvable.setIcon(createImageIcon("checkmark.png"));
+		meSolvable.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.ALT_MASK));
+		meSolvable.getAccessibleContext().setAccessibleDescription("Check if game is solveable");
+		
+		JMenuItem meSolve = new JMenuItem("Solve Game", KeyEvent.VK_S);
+		meSolve.setIcon(createImageIcon("redChek.png"));
+		meSolve.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
+		meSolve.getAccessibleContext().setAccessibleDescription("Solve game");
+		
+		menu.add(menuPlay);
+		menu.add(meSolvable);
+		menu.add(meSolve);
+		
+		for (JMenuItem button: new JMenuItem[] { menuPlay, meSolvable, meSolve }) {
+        	button.setFocusPainted(false);
+            button.addActionListener(e -> {
+            	if(e.getSource() == menuPlay)
+            		newClicked(9);
+            	if(e.getSource() == meSolvable)
+            		isSolvable();
+            	if(e.getSource() == meSolve)
+            		solve();
+//                newClicked(e.getSource() == new9Game ? 9 : 0);
+            });
+		}
+		
+		
         /*JToolBar toolbar = new JToolBar("Menu toolbar");
         JButton newchoiceButton = new JButton("choice");
         toolbar.add(newchoiceButton);
