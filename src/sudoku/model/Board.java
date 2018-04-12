@@ -82,7 +82,7 @@ public class Board {
 	
 	/** gives the amount of preset coordinates*/
 	private int numlsValues(){
-		return 22 +(int)(Math.random() *8);
+		return (size*size)/4 +(int)(Math.random() *size);
 	}
 	
 	/**converts the string preset values into an array */
@@ -191,7 +191,7 @@ public class Board {
 
 	public boolean hasValueIn(int x, int y) {
 		
-		if(x > 8 || y > 8) return false;
+		if(x > size-1 || y > size-1) return false;
 		System.out.println("   "+ x +" "+ y + " " +board[y][x] + " "+ (board[y][x] != 0) );
 		return board[y][x] != 0;
 	}

@@ -150,6 +150,8 @@ public class SudokuDialog extends JFrame {
     	if( JOptionPane.showConfirmDialog(msgBar, "Would You Like To Play A New Game") == 0){
     		board = new Board(size); //FIXME ADDED
     		boardPanel.setBoard(board);
+            solver = new Solver(board,size);
+
     	}
     	repaint();
     }
