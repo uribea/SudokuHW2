@@ -23,6 +23,7 @@ public class Solver {
 	 */
 	public boolean solve(int x, int y){
 		int xN, yN; //new x and y
+		
 		if(x == size-1){
 			xN = 0; 
 			yN = y + 1;
@@ -31,11 +32,12 @@ public class Solver {
 			xN = x + 1;
 			yN = y;
 		}
-		
+		if(board.hasValueIn(x, y)) return (solve(xN, yN));
 
 		if(board.isSolved()) 	return true;
 		else{
 			for (int i = 1; i <= size; ++i){
+				System.out.println(y+ " " +x + " "+i);
 				int[] ca = {x,y,i};
 				if (board.validCoordinates(ca)){
 					board.setCoordinates(ca);

@@ -27,6 +27,7 @@ import java.io.File;
 import javax.sound.sampled.*;
 
 import sudoku.model.Board;
+import sudoku.model.Solver;
 
 /**
  * A dialog template for playing simple Sudoku games.
@@ -49,6 +50,7 @@ public class SudokuDialog extends JFrame {
     
     /** Sudoku board. */
     private Board board;
+    Solver solver;
 
     /** Special panel to display a Sudoku board. */
     private BoardPanel boardPanel;
@@ -76,6 +78,7 @@ public class SudokuDialog extends JFrame {
         //setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
+        solver = new Solver(board,board.size);
         //setResizable(false);
     }
 
@@ -265,16 +268,22 @@ public class SudokuDialog extends JFrame {
         return Menus;
         
 	}
-
+	
 	private void isSolvable() {
 		// TODO Auto-generated method stub
-		showMessage("is Solvable");
-		
+		if(solver.isSolvable()){
+			System.out.println("boo");
+			showMessage("The board is still solvable!");
+		}
+		else
+			showMessage("The board is NOT solvable!");
 	}
 
 	private void solve() {
 		// TODO Auto-generated method stub
-		showMessage("Solve");
+		solver.solve();
+		repaint();
+		showMessage("Solved");
 	}
 
 	/** Create a control panel consisting of new and number buttons. */

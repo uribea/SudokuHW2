@@ -188,4 +188,11 @@ public class Board {
 	public boolean isSolved() {
 		return emptySquares < 1;
 	}
+
+	public boolean hasValueIn(int x, int y) {
+		
+		if(x > 8 || y > 8) return false;
+		System.out.println("   "+ x +" "+ y + " " +board[y][x] + " "+ (board[y][x] != 0) );
+		return board[y][x] != 0;
+	}
 }
