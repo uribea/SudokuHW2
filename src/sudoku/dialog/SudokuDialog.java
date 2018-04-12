@@ -46,7 +46,7 @@ public class SudokuDialog extends JFrame {
     /** used to find the location of the image*/
     private final static String IMAGE_DIR = "/image/";
 
-    
+    private JPanel buttons, menu;
     
     /** Sudoku board. */
     private Board board;
@@ -93,7 +93,18 @@ public class SudokuDialog extends JFrame {
     	boardPanel.highlightBlock(x,y);
         values[0]= x;
         values[1]= y;
-    	showMessage(String.format("Board clicked: x = %d, y = %d",  x, y));
+        
+        menu.remove(buttons);
+        buttons = makeControlPanel();
+        menu.add(buttons, BorderLayout.SOUTH);
+    	
+        String s = " ";
+        for (int i = 0; i <= board.size; i++) {
+        	if(board.validCoordinates(new int[]{values[0], values[1], i}))
+        			s= s+i+",";
+        }
+        
+    	showMessage(String.format("Board clicked: x = %d, y = %d, hint = {%s}",  x, y,s));
     }
     
     /**
@@ -156,12 +167,15 @@ public class SudokuDialog extends JFrame {
     	
         setIconImage(createImageIcon("sudoku.png").getImage());
         setLayout(new BorderLayout());
-        JPanel menu = makeMenus();
+        
+        setMinimumSize(new Dimension(310, 520));
+        
+        menu = makeMenus();
         
         
-        JPanel buttons = makeControlPanel();
+        buttons = makeControlPanel();
         // boarder: top, left, bottom, right
-        buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
+        //buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
         menu.add(buttons, BorderLayout.SOUTH);
         
         //menu.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
@@ -310,6 +324,10 @@ public class SudokuDialog extends JFrame {
             button.setMargin(new Insets(0,2,0,2));
             button.addActionListener(e -> numberClicked(number));
     		numberButtons.add(button);
+    		
+    		if(values[0]!=-1 && values[1]!=-1 && !board.validCoordinates(new int[]{values[0], values[1], number}))
+            	button.setEnabled(false);
+            else button.setEnabled(true);
     	}
     	numberButtons.setAlignmentX(LEFT_ALIGNMENT);
 
