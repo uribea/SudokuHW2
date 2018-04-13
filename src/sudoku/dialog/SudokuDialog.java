@@ -308,6 +308,7 @@ public class SudokuDialog extends JFrame {
 		if(solver.isSolvable()){
 			//System.out.println("boo");
 			showMessage("The board is still solvable!");
+			board.isSolved();
 		}
 		else{
 			errSound();
@@ -319,6 +320,7 @@ public class SudokuDialog extends JFrame {
 		// TODO Auto-generated method stub
 		if(solver.solve()){
 			showMessage("Solved");
+			repaint();
 			congratulate();
 		}
 		else {showMessage("Not Solvable");
