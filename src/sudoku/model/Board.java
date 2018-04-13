@@ -102,9 +102,10 @@ public class Board {
 		}		
 	}
 	public void setBoardArray(int[][] a){
-		for (int i = 0; i < size; ++i)
-			for(int j = 0; j < size; ++j)
-				board[i][j] = a[i][j];
+		//for (int i = 0; i < size; ++i)
+			//for(int j = 0; j < size; ++j)
+				//board[i][j] = a[i][j];
+		this.board = a;
 	}
 	/** it sets the preset values*/
 	private void setLockedCoordinates(int lsValuesNum){
@@ -136,7 +137,7 @@ public class Board {
 	 * @return the boards 2d array*/
 	public int[][] getBoard(){
 
-		return board;
+		return this.board;
 	}
 	public boolean[][] getLocked(){
 		return lsValue;
@@ -192,7 +193,7 @@ public class Board {
 	public boolean hasValueIn(int x, int y) {
 		
 		if(x > size-1 || y > size-1) return false;
-		System.out.println("   "+ x +" "+ y + " " +board[y][x] + " "+ (board[y][x] != 0) );
+		//System.out.println("   "+ x +" "+ y + " " +board[y][x] + " "+ (board[y][x] != 0) );
 		return board[y][x] != 0;
 	}
 }

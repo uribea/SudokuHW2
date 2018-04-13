@@ -54,6 +54,8 @@ public class SudokuDialog extends JFrame {
 
     /** Special panel to display a Sudoku board. */
     private BoardPanel boardPanel;
+    
+    private boolean hintTog;
 
     /** Message bar to display various messages. */
     private JLabel msgBar = new JLabel("");
@@ -103,8 +105,9 @@ public class SudokuDialog extends JFrame {
         	if(board.validCoordinates(new int[]{values[0], values[1], i}))
         			s= s+i+",";
         }
-        
-    	showMessage(String.format("Board clicked: x = %d, y = %d, hint = {%s}",  x, y,s));
+        if(hintTog)
+    	showMessage(String.format("hint = {%s}", s));
+        else showMessage(String.format("Board clicked: x = %d, y = %d,",  x, y));
     }
     
     /**
@@ -260,7 +263,11 @@ public class SudokuDialog extends JFrame {
 		solveable.setToolTipText("Checks if current board is solveable");
 		toolbar.add(solveable);
 		
-		for (JButton button: new JButton[] { new9Game, solveGame, solveable }) {
+		JButton hint = new JButton(createImageIcon("Glossy_3d_blue_questionmark.png"));
+		hint.setToolTipText("Click back on board for hint");
+		toolbar.add(hint);
+		
+		for (JButton button: new JButton[] { new9Game, solveGame, solveable, hint }) {
         	button.setFocusPainted(false);
             button.addActionListener(e -> {
             	if(e.getSource() == new9Game)
@@ -269,6 +276,8 @@ public class SudokuDialog extends JFrame {
             		solve();
             	if(e.getSource() == solveable)
             		isSolvable();
+            	if(e.getSource() == hint)
+            		hintOn();
 //                newClicked(e.getSource() == new9Game ? 9 : 0);
             });
             //newButtons.add(button);
@@ -285,6 +294,10 @@ public class SudokuDialog extends JFrame {
         
 	}
 	
+	private void hintOn() {
+		hintTog = !hintTog;
+	}
+
 	private void isSolvable() {
 		// TODO Auto-generated method stub
 		if(solver.isSolvable()){

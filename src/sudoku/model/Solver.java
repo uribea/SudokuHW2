@@ -37,7 +37,7 @@ public class Solver {
 		if(board.isSolved()) 	return true;
 		else{
 			for (int i = 1; i <= size; ++i){
-				System.out.println(y+ " " +x + " "+i);
+				//System.out.println(y+ " " +x + " "+i);
 				int[] ca = {x,y,i};
 				if (board.validCoordinates(ca)){
 					board.setCoordinates(ca);
@@ -56,9 +56,22 @@ public class Solver {
 		
 	}
 	public boolean isSolvable(){
-		Board tempBoard = new Board(size);
+		/*Board tempBoard = board;
 		tempBoard.setBoardArray(board.getBoard());
 		Solver tempSolver = new Solver(tempBoard, tempBoard.getSize());
-		return tempSolver.solve();
+		*/
+		int[][] temp = new int[board.size][board.size];//board.getBoard();
+		int[][] temp2 = board.getBoard();
+		for(int i = 0 ; i < temp.length; i++){
+			for(int j = 0 ; j < temp.length; j++){
+				//System.out.print(temp2[i][j]+" ");
+				temp[i][j] = temp2[i][j];
+			}
+			//System.out.println();
+		}
+		//System.out.println("-----------------------");
+		boolean sol = solve();
+		board.setBoardArray(temp);
+		return sol;
 	}
 }
