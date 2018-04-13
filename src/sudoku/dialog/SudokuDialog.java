@@ -133,15 +133,20 @@ public class SudokuDialog extends JFrame {
     		errSound();
     	}
         showMessage("Number clicked: " + number);
-        if(board.isSolved()){
-        	int answer = JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Continue?");
-        	if( answer == 0) newClicked(board.size);
-        	else if ( answer == 1) System.exit(0);
-        }
+        if(board.isSolved())
+        	congratulate();
+        
         
     }
     
-    /**
+    private void congratulate() {
+    	int answer = JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Continue?");
+    	if( answer == 0) newClicked(board.size);
+    	else if ( answer == 1) System.exit(0);
+		
+	}
+
+	/**
      * Callback to be invoked when a new button is clicked.
      * If the current game is over, start a new game of the given size;
      * otherwise, prompt the user for a confirmation and then proceed
@@ -233,7 +238,7 @@ public class SudokuDialog extends JFrame {
         	button.setFocusPainted(false);
             button.addActionListener(e -> {
             	if(e.getSource() == menuPlay)
-            		newClicked(9);
+            		newClicked(board.size);
             	if(e.getSource() == meSolvable)
             		isSolvable();
             	if(e.getSource() == meSolve)
@@ -271,7 +276,7 @@ public class SudokuDialog extends JFrame {
         	button.setFocusPainted(false);
             button.addActionListener(e -> {
             	if(e.getSource() == new9Game)
-            		newClicked(9);
+            		newClicked(board.size);
             	if(e.getSource() == solveGame)
             		solve();
             	if(e.getSource() == solveable)
@@ -301,18 +306,26 @@ public class SudokuDialog extends JFrame {
 	private void isSolvable() {
 		// TODO Auto-generated method stub
 		if(solver.isSolvable()){
-			System.out.println("boo");
+			//System.out.println("boo");
 			showMessage("The board is still solvable!");
 		}
-		else
+		else{
+			errSound();
 			showMessage("The board is NOT solvable!");
+		}
 	}
 
 	private void solve() {
 		// TODO Auto-generated method stub
-		solver.solve();
+		if(solver.solve()){
+			showMessage("Solved");
+			congratulate();
+		}
+		else {showMessage("Not Solvable");
+			errSound();
+		}
 		repaint();
-		showMessage("Solved");
+		
 	}
 
 	/** Create a control panel consisting of new and number buttons. */

@@ -72,6 +72,7 @@ public class Solver {
 		//System.out.println("-----------------------");
 		boolean sol = solve();
 		board.setBoardArray(temp);
+		board.isSolved();
 		return sol;
 	}
 }

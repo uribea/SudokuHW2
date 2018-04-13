@@ -187,6 +187,11 @@ public class Board {
 	 * @return whether the board is complete or not
 	 */
 	public boolean isSolved() {
+		emptySquares = 0;
+		for(int i = 0; i< size; i++)
+			for(int j = 0; j< size; j++)
+				if(board[i][j]<1)
+					emptySquares++;
 		return emptySquares < 1;
 	}
 
