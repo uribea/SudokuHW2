@@ -178,7 +178,7 @@ public class SudokuDialog extends JFrame {
         setIconImage(createImageIcon("sudoku.png").getImage());
         setLayout(new BorderLayout());
         
-        setMinimumSize(new Dimension(310, 520));
+        setMinimumSize(new Dimension(350, 540));
         
         menu = makeMenus();
         
@@ -334,11 +334,25 @@ public class SudokuDialog extends JFrame {
     private JPanel makeControlPanel() {
 
     	JPanel newButtons = new JPanel(new FlowLayout());
+    	JButton undo = new JButton("<==");
         JButton new4Button = new JButton("New (4x4)");
-        for (JButton button: new JButton[] { new4Button, new JButton("New (9x9)") }) {
+        JButton new9Button = new JButton("New (9x9)");
+        JButton redo = new JButton("==>");
+        for (JButton button: new JButton[] { undo, new4Button, new9Button , redo  }) {
         	button.setFocusPainted(false);
             button.addActionListener(e -> {
-                newClicked(e.getSource() == new4Button ? 4 : 9);
+                if(e.getSource() == undo){
+                	
+                }
+                if(e.getSource() == new4Button){
+                	newClicked(4);
+                }	
+                if(e.getSource() == new9Button){
+                	newClicked(9);
+                }
+                if(e.getSource() == redo){
+                	
+                }
             });
             newButtons.add(button);
     	}
