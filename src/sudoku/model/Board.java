@@ -27,6 +27,9 @@ public class Board {
 	
 	boolean starting;
 	
+	CoordinatesDLL cDLL = null;
+	CoordinatesDLL firstMove = null;
+	
 	/**
 	 * Constructor for board.
 	 * Default size of four.
@@ -73,6 +76,54 @@ public class Board {
 		starting = false;
 		//printArray();
 		
+	}
+	public boolean undoExists(){
+		if (cDLL == null) return false;
+		//if (cDLL.prev == null) return false;
+		return true;
+	}
+	public boolean redoExists(){
+		if (cDLL == null){
+			if ( firstMove == null)
+				return false;
+			else
+				return true;
+		}
+		if (cDLL.next == null){
+			
+			return false;
+		}
+		return true;
+		
+	}
+
+	public void undo(){
+		
+		int[] c ={cDLL.x, cDLL.y, cDLL.before};
+		if (c[2] == 0) emptySquares++;
+		if (board[c[1]][c[0]] == 0) emptySquares--;
+		board[c[1]][c[0]] = c[2];
+		cDLL = cDLL.prev;
+		//cDLL.print();
+		
+		
+	}
+	public void redo(){
+		if(cDLL == null){
+			int[] c ={firstMove.x, firstMove.y, firstMove.after};
+			if (c[2] == 0) emptySquares++;
+			if (board[c[1]][c[0]] == 0) emptySquares--;
+			board[c[1]][c[0]] = c[2];
+			//firstMove = null;
+		}
+		
+		else{ cDLL = cDLL.next;
+			int[] c ={cDLL.x, cDLL.y, cDLL.after};
+			if (c[2] == 0) emptySquares++;
+			if (board[c[1]][c[0]] == 0) emptySquares--;
+			board[c[1]][c[0]] = c[2];
+			cDLL.print();
+		}
 	}
 	public void printArray(){
 		for(int i = 0; i < size; ++i)
@@ -171,12 +222,24 @@ public class Board {
 		return true;
 	}
 
-
+	private void addC(int[] c){
+		if (cDLL == null){
+			firstMove = new CoordinatesDLL(c[0], c[1], board[c[1]][c[0]],  c[2], null, null);
+			cDLL = new CoordinatesDLL(c[0], c[1], board[c[1]][c[0]],  c[2], null, null);
+		}
+		else{
+			CoordinatesDLL temp = new CoordinatesDLL(c[0], c[1], board[c[1]][c[0]],  c[2], null, null);
+			cDLL.next = temp;
+			temp.prev = cDLL;
+			cDLL = cDLL.next;
+		}
+	}
 
 	/** sets the coordinates on the board after the validation is passed
 	 *  @param c the coordinates being added
 	 */
 	public void setCoordinates(int[] c){
+		if (!starting) addC(c);
 		if (c[2] == 0) emptySquares++;
 		if (board[c[1]][c[0]] == 0) emptySquares--;
 		board[c[1]][c[0]] = c[2];

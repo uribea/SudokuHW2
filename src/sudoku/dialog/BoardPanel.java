@@ -2,6 +2,7 @@ package sudoku.dialog;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
@@ -47,9 +48,16 @@ public class BoardPanel extends JPanel {
 	private static final Color highlightColor = new Color(204, 204, 250);
 	
 	private static final Color lockedColor = new Color(250, 210, 160);
+	
+	private static final Font normalFont = new Font("TimesRoman", Font.PLAIN, 12) ;
+	
+	private static final Font smallFont = new Font("TimesRoman", Font.PLAIN, 10);
+	
 
     /** Board to be displayed. */
     private Board board;
+    
+    boolean hint = false;
 
     /** Width and height of a square in pixels. */
     private int squareSize;
@@ -110,7 +118,9 @@ public class BoardPanel extends JPanel {
     	int yy = y / squareSize;
     	return xx * 100 + yy;
     }
-
+    public void hintTog(){
+    	hint = !hint;
+    }
     /** Draw the associated board. */
     @Override
     public void paint(Graphics g) {
@@ -149,10 +159,31 @@ public class BoardPanel extends JPanel {
 		g3.setColor(lineColor);
 		int[][] b = board.getBoard();
 		
+		Graphics2D gSmall =  (Graphics2D) g;
+		//gSmall.setFont(new Font("TimesRoman", Font.PLAIN, 4));
+		
 		for(int i = 0; i < size; ++i){
 			for (int j = 0; j < size; ++j){
 				if (b[i][j] != 0)
 					g.drawString(Integer.toString(b[i][j]),(squareSize)*(j)-3 + (squareSize/2),(squareSize)*(i)+3 + (squareSize/2));
+				else{
+					if(hint){
+						int[] c = {i, j, 1};
+						System.out.println("hi");
+						gSmall.setFont(smallFont);
+						for(int k = 1; k <= subsize; ++k){
+							for(int m = 0; m < subsize; ++m){
+								c[2]= m*subsize + k;
+								if(board.validCoordinates(c))
+									gSmall.drawString(Integer.toString(c[2]),(squareSize)*(j) + (k * 9) -1 ,(squareSize)*(i) + 12 +  (m * 9)  );
+								
+							}
+							
+						}
+						gSmall.setFont(normalFont);
+								
+					}
+				}
 			}
 		}
 		

@@ -163,6 +163,16 @@ public class SudokuDialog extends JFrame {
     	}
     	repaint();
     }
+    private void undo(){
+    	if (board.undoExists()) board.undo();
+    	else errSound();
+    	repaint();
+    }
+    private void redo(){
+    	if (board.redoExists()) board.redo();
+    	else errSound();
+       	repaint();
+    }
 
     /**
      * Display the given string in the message bar.
@@ -300,7 +310,8 @@ public class SudokuDialog extends JFrame {
 	}
 	
 	private void hintOn() {
-		hintTog = !hintTog;
+		boardPanel.hintTog();
+		repaint();
 	}
 
 	private void isSolvable() {
@@ -342,7 +353,7 @@ public class SudokuDialog extends JFrame {
         	button.setFocusPainted(false);
             button.addActionListener(e -> {
                 if(e.getSource() == undo){
-                	
+                	undo();
                 }
                 if(e.getSource() == new4Button){
                 	newClicked(4);
@@ -351,6 +362,7 @@ public class SudokuDialog extends JFrame {
                 	newClicked(9);
                 }
                 if(e.getSource() == redo){
+                	redo();
                 	
                 }
             });
