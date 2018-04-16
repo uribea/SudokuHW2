@@ -114,7 +114,7 @@ public class Board {
 			if (c[2] == 0) emptySquares++;
 			if (board[c[1]][c[0]] == 0) emptySquares--;
 			board[c[1]][c[0]] = c[2];
-			//firstMove = null;
+			cDLL = firstMove.next;
 		}
 		
 		else{ cDLL = cDLL.next;
@@ -224,8 +224,9 @@ public class Board {
 
 	private void addC(int[] c){
 		if (cDLL == null){
-			firstMove = new CoordinatesDLL(c[0], c[1], board[c[1]][c[0]],  c[2], null, null);
+			
 			cDLL = new CoordinatesDLL(c[0], c[1], board[c[1]][c[0]],  c[2], null, null);
+			firstMove = cDLL;
 		}
 		else{
 			CoordinatesDLL temp = new CoordinatesDLL(c[0], c[1], board[c[1]][c[0]],  c[2], null, null);
