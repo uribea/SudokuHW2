@@ -47,16 +47,20 @@ public class BoardPanel extends JPanel {
 	/** Color of highlighted selected block in the board. */
 	private static final Color highlightColor = new Color(204, 204, 250);
 	
+	/** Color of locked block in the board. */
 	private static final Color lockedColor = new Color(250, 210, 160);
 	
-	private static final Font normalFont = new Font("TimesRoman", Font.PLAIN, 12) ;
+	/** Font of original values in the board. */
+	private static final Font normalFont = new Font("TimesRoman", Font.BOLD, 16) ;
 	
+	/** Font of small hint values in the board. */
 	private static final Font smallFont = new Font("TimesRoman", Font.PLAIN, 10);
 	
 
     /** Board to be displayed. */
     private Board board;
     
+    /** boolean to tell if hints are on or not*/
     boolean hint = false;
 
     /** Width and height of a square in pixels. */
@@ -118,6 +122,9 @@ public class BoardPanel extends JPanel {
     	int yy = y / squareSize;
     	return xx * 100 + yy;
     }
+    /**
+     * 
+     */
     public void hintTog(){
     	hint = !hint;
     }
@@ -126,7 +133,7 @@ public class BoardPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g); 
         
-        
+        g.setFont(normalFont);
         // determine the square size
         Dimension dim = getSize();
         squareSize = Math.min(dim.width, dim.height) / board.size;
@@ -184,7 +191,6 @@ public class BoardPanel extends JPanel {
 				else{
 					if(hint){
 						int[] c = {j, i, 0};
-						System.out.println("hi");
 						gSmall.setFont(smallFont);
 						for(int k = 0; k < subsize; ++k){
 							for(int m = 0; m < subsize; ++m){

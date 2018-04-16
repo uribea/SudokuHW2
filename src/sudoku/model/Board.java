@@ -23,11 +23,15 @@ public class Board {
 	
 	/** stores initial values.
 	 * Used to make sure values inside can't be changed*/
-	private boolean[][] lsValue;  //ls = locked starting
+	private boolean[][] lsValue;  
 	
+	/** boolean value used to avoid functions that are not needed in set up */
 	boolean starting;
 	
+	/** keeps track of current position in dll*/
 	CoordinatesDLL cDLL = null;
+	
+	/** keeps track of the head in the dll*/
 	CoordinatesDLL firstMove = null;
 	
 	/**
@@ -42,16 +46,7 @@ public class Board {
 		
 	}
 	
-	/**
-	 * Constructor for board.
-	 * @param size the size of the board desired. 
-	 */
-	//public Board(int size){
-		//this.size = size;
-		//subsize = (int)Math.sqrt((double)size);
-		//emptySquares = size * size;
-		//board = new int[size][size];
-	//}
+
 	/**
 	 * Constructor for board.
 	 * @param size the size of the board desired. 
@@ -68,20 +63,27 @@ public class Board {
 		int lsValuesNum = numlsValues();
 		lsValue = new boolean[size][size];//0=x, 1=y, 2=v
 		solver.solve();
-		removeValues(lsValuesNum);//PROBLEM HERE
+		removeValues(lsValuesNum);
 	
 		setLockedCoordinates(lsValuesNum);
 		emptySquares = (size * size) - lsValuesNum;
 		
 		starting = false;
-		//printArray();
 		
 	}
+	/**
+	 * checks if its possible to undo
+	 * @return boolean, if it can or cannot
+	 */
 	public boolean undoExists(){
 		if (cDLL == null) return false;
-		//if (cDLL.prev == null) return false;
 		return true;
 	}
+	
+	/**
+	 * checks if its possible to redo
+	 * @return boolean, if it can or cannot
+	 */
 	public boolean redoExists(){
 		if (cDLL == null){
 			if ( firstMove == null)
@@ -96,7 +98,10 @@ public class Board {
 		return true;
 		
 	}
-
+	
+	/**
+	 * undos to the previous state of the board
+	 */
 	public void undo(){
 		
 		int[] c ={cDLL.x, cDLL.y, cDLL.before};
@@ -104,10 +109,13 @@ public class Board {
 		if (board[c[1]][c[0]] == 0) emptySquares--;
 		board[c[1]][c[0]] = c[2];
 		cDLL = cDLL.prev;
-		//cDLL.print();
 		
 		
 	}
+	
+	/**used as a redo function in the board
+	 * undos an undo
+	 */
 	public void redo(){
 		if(cDLL == null){
 			int[] c ={firstMove.x, firstMove.y, firstMove.after};
@@ -122,9 +130,13 @@ public class Board {
 			if (c[2] == 0) emptySquares++;
 			if (board[c[1]][c[0]] == 0) emptySquares--;
 			board[c[1]][c[0]] = c[2];
-			cDLL.print();
 		}
 	}
+	
+	/**
+	 * prints the array out
+	 * used for debugging
+	 */
 	public void printArray(){
 		for(int i = 0; i < size; ++i)
 			for(int j = 0; j < size; ++j)
@@ -152,13 +164,18 @@ public class Board {
 			}
 		}		
 	}
+	
+	/** 
+	 * sets the board array and the board given
+	 * param int[][] the array wanted to be made equal to the board
+	 * */
 	public void setBoardArray(int[][] a){
 		//for (int i = 0; i < size; ++i)
 			//for(int j = 0; j < size; ++j)
 				//board[i][j] = a[i][j];
 		this.board = a;
 	}
-	/** it sets the preset values*/
+	/**sets the preset values*/
 	private void setLockedCoordinates(int lsValuesNum){
 		//int x = 0;
 		for(int i = 0; i < size; ++i){
@@ -190,6 +207,10 @@ public class Board {
 
 		return this.board;
 	}
+	/**
+	 * used as a getter method to get locked values
+	 * @return boolean[][] board array, true in cells that are locked
+	 */
 	public boolean[][] getLocked(){
 		return lsValue;
 	}
@@ -221,7 +242,11 @@ public class Board {
 		}
 		return true;
 	}
-
+	
+	/**
+	 * adds coordinates to the dll
+	 * @param c the coordinates that are gonna be added
+	 */
 	private void addC(int[] c){
 		if (cDLL == null){
 			
@@ -259,10 +284,16 @@ public class Board {
 		return emptySquares < 1;
 	}
 
+	/**
+	 * checks if the board has a values in a certain position
+	 * @param x position
+	 * @param y position
+	 * @return true if it does have the value false if not
+	 */
 	public boolean hasValueIn(int x, int y) {
 		
 		if(x > size-1 || y > size-1) return false;
-		//System.out.println("   "+ x +" "+ y + " " +board[y][x] + " "+ (board[y][x] != 0) );
+		
 		return board[y][x] != 0;
 	}
 }

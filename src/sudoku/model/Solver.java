@@ -1,25 +1,39 @@
 package sudoku.model;
 
 
-
+/**
+ * Class to run solving algorithm on the board
+ * @author Daniel Almeraz and Alan
+ *
+ */
 public class Solver {
+	/** the board the class needs to run its algorithms on*/
 	Board board;
+	/** size of the board*/
 	int size;
-	
+	/**
+	 * constructor for solver
+	 * @param b instance of board
+	 * @param s the size of the board
+	 */
 	public Solver(Board b, int s){
 		board = b;
 		size = s;
 		
 	}
-	//MISSING JAVADOC
+	/**
+	 * solve the board, used for as a more intuitive way to class solve that calls another solve
+	 * with valuables it needs
+	 * @return boolean to see if board is solvable
+	 */
 	public boolean solve(){
 		return solve(0, 0);
 	}
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 *  solve the board
+	 * @param x place to start in board 
+	 * @param y place to start in board
+	 * @return boolean to see if board is solvable
 	 */
 	public boolean solve(int x, int y){
 		int xN, yN; //new x and y

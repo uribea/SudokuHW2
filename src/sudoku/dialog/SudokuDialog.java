@@ -55,6 +55,7 @@ public class SudokuDialog extends JFrame {
     /** Special panel to display a Sudoku board. */
     private BoardPanel boardPanel;
     
+    /**used to display the hits on the bottom of the panel*/
     private boolean hintTog;
 
     /** Message bar to display various messages. */
@@ -91,7 +92,6 @@ public class SudokuDialog extends JFrame {
      */
      private void boardClicked(int x, int y) {
         
-    	// WRITE YOUR CODE HERE ...
     	boardPanel.highlightBlock(x,y);
         values[0]= x;
         values[1]= y;
@@ -119,7 +119,7 @@ public class SudokuDialog extends JFrame {
     		values[2] = number;
     		if (board.validCoordinates(values)){
     			board.setCoordinates(values);//send data to board
-    			//rest values
+    			//reset values
     			values[0] = -1;
     			values[1] = -1;
     			boardPanel.highlightBlockOff();
@@ -138,7 +138,9 @@ public class SudokuDialog extends JFrame {
         
         
     }
-    
+    /**
+     * congradulates the user upon completion
+     */
     private void congratulate() {
     	int answer = JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Continue?");
     	if( answer == 0) newClicked(board.size);
@@ -156,18 +158,25 @@ public class SudokuDialog extends JFrame {
     private void newClicked(int size) {
     	showMessage("New clicked: " + size);
     	if( JOptionPane.showConfirmDialog(msgBar, "Would You Like To Play A New Game") == 0){
-    		board = new Board(size); //FIXME ADDED
+    		board = new Board(size); 
     		boardPanel.setBoard(board);
             solver = new Solver(board,size);
 
     	}
     	repaint();
     }
+    /**
+     * undos to the previous board construction
+     */
     private void undo(){
     	if (board.undoExists()) board.undo();
     	else errSound();
     	repaint();
     }
+    /**
+     * redos to the next position of the board
+     * undos an undo
+     */
     private void redo(){
     	if (board.redoExists()) board.redo();
     	else errSound();
@@ -194,7 +203,7 @@ public class SudokuDialog extends JFrame {
         
         
         buttons = makeControlPanel();
-        // boarder: top, left, bottom, right
+        // border: top, left, bottom, right
         //buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
         menu.add(buttons, BorderLayout.SOUTH);
         
@@ -215,7 +224,10 @@ public class SudokuDialog extends JFrame {
         add(msgBar, BorderLayout.SOUTH);
     }
       
-
+    /**
+     * makes the needed tool bar
+     * @return Jpanel menu
+     */
 	private JPanel makeMenus() {
     	JMenuBar menubar = new JMenuBar();
         JMenu menu = new JMenu("GAME");
@@ -265,7 +277,6 @@ public class SudokuDialog extends JFrame {
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
         //panel.add(toolBar, BorderLayout.PAGE_START);
-    	// new9Game;
     	JButton new9Game = new JButton(createImageIcon("play.png"));
 		new9Game.setToolTipText("Play new game");
 		toolbar.add(new9Game);
@@ -308,12 +319,17 @@ public class SudokuDialog extends JFrame {
         return Menus;
         
 	}
-	
+	/**
+	 * used to toggle hints and off
+	 */
 	private void hintOn() {
+		hintTog = true;
 		boardPanel.hintTog();
 		repaint();
 	}
-
+	/** 
+	 * uses solvable class to check if the board is solvable
+	 */
 	private void isSolvable() {
 		// TODO Auto-generated method stub
 		if(solver.isSolvable()){
@@ -326,9 +342,11 @@ public class SudokuDialog extends JFrame {
 			showMessage("The board is NOT solvable!");
 		}
 	}
-
+	/**
+	 * solves the board
+	 * plays error sound if not solvable to begin with
+	 */
 	private void solve() {
-		// TODO Auto-generated method stub
 		if(solver.solve()){
 			showMessage("Solved");
 			repaint();
