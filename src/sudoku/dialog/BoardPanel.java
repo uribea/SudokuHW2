@@ -138,6 +138,21 @@ public class BoardPanel extends JPanel {
 
 		int size = board.getSize();
 		int subsize = board.getSubsize();
+		int[] distances = new int[4];
+		if(size == 9){
+			distances[0] = 9; //how far apart x
+			distances[1] = 6; //starting x
+			distances[2] = 12; //starting y
+			distances[3] = 9; // how far apart y
+		}
+		else if(size == 4){
+			distances[0] = 34; //how far apart x
+			distances[1] = 20; //starting x
+			distances[2] = 26; //starting y
+			distances[3] = 34; // how far apart y
+		}
+
+	
        
         //highlights a block if selected
 		Graphics g4 = (Graphics2D) g;
@@ -168,14 +183,14 @@ public class BoardPanel extends JPanel {
 					g.drawString(Integer.toString(b[i][j]),(squareSize)*(j)-3 + (squareSize/2),(squareSize)*(i)+3 + (squareSize/2));
 				else{
 					if(hint){
-						int[] c = {i, j, 1};
+						int[] c = {j, i, 0};
 						System.out.println("hi");
 						gSmall.setFont(smallFont);
-						for(int k = 1; k <= subsize; ++k){
+						for(int k = 0; k < subsize; ++k){
 							for(int m = 0; m < subsize; ++m){
-								c[2]= m*subsize + k;
+								c[2]= m*subsize + (k+1);
 								if(board.validCoordinates(c))
-									gSmall.drawString(Integer.toString(c[2]),(squareSize)*(j) + (k * 9) -1 ,(squareSize)*(i) + 12 +  (m * 9)  );
+									gSmall.drawString(Integer.toString(c[2]),(squareSize)*(j) + (k * distances[0]) + distances[1] ,(squareSize)*(i) + distances[2] +  (m * distances[3])  );
 								
 							}
 							

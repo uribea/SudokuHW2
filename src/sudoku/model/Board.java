@@ -114,7 +114,7 @@ public class Board {
 			if (c[2] == 0) emptySquares++;
 			if (board[c[1]][c[0]] == 0) emptySquares--;
 			board[c[1]][c[0]] = c[2];
-			cDLL = firstMove.next;
+			cDLL = firstMove;
 		}
 		
 		else{ cDLL = cDLL.next;
