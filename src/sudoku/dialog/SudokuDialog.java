@@ -68,7 +68,7 @@ public class SudokuDialog extends JFrame {
      * @param x 0-based row index of the clicked square.
      * @param y 0-based column index of the clicked square.
      */
-    int[] values = { -1, -1, -1};
+    protected int[] values = { -1, -1, -1};
     private void boardClicked(int x, int y) {
         
     	// WRITE YOUR CODE HERE ...
@@ -87,8 +87,9 @@ public class SudokuDialog extends JFrame {
         //
     	if(values[0]!= -1 && values[1] != -1){
     		values[2] = number;
-    		if (board.validCoordinates(values)){
-    			board.setCoordinates(values);//send data to board
+    		if (validCoordinates()){
+    			setCoordinates();
+    			//board.setCoordinates(values);//send data to board
     			values[0] = -1;
     			values[1] = -1;
     			boardPanel.highlightBlockOff();
@@ -106,6 +107,13 @@ public class SudokuDialog extends JFrame {
         	if(JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Would You Like To Start A New Game") == 0)
         		newClicked(board.size);
         
+    }
+    
+    public boolean validCoordinates(){
+    	return board.validCoordinates(values);
+    }
+    public void setCoordinates(){
+    	board.setCoordinates(values);
     }
     
     /**
