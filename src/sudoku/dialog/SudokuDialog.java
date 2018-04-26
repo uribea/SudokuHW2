@@ -201,7 +201,6 @@ public class SudokuDialog extends JFrame {
         
         menu = makeMenus();
         
-        
         buttons = makeControlPanel();
         // border: top, left, bottom, right
         //buttons.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
@@ -214,8 +213,6 @@ public class SudokuDialog extends JFrame {
         JPanel board = new JPanel();
         board.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
         board.setLayout(new GridLayout(1,1));
-        
-        
         
         board.add(boardPanel);
         add(board, BorderLayout.CENTER);
@@ -269,7 +266,17 @@ public class SudokuDialog extends JFrame {
             });
 		}
 		
+		JToolBar toolbar = createToolBar();
+		JPanel Menus = new JPanel(new BorderLayout());
+        //Menus.setLayout(new BoxLayout(Menus, BoxLayout.PAGE_AXIS));
+        
+        Menus.add(menubar, BorderLayout.NORTH);
+        Menus.add(toolbar, BorderLayout.CENTER);
+        
+		return Menus;
+	}
 		
+	protected JToolBar createToolBar() {
         /*JToolBar toolbar = new JToolBar("Menu toolbar");
         JButton newchoiceButton = new JButton("choice");
         toolbar.add(newchoiceButton);
@@ -307,16 +314,9 @@ public class SudokuDialog extends JFrame {
 //                newClicked(e.getSource() == new9Game ? 9 : 0);
             });
             //newButtons.add(button);
-    	}
-		
+		}
         
-        JPanel Menus = new JPanel(new BorderLayout());
-        //Menus.setLayout(new BoxLayout(Menus, BoxLayout.PAGE_AXIS));
-        
-        Menus.add(menubar, BorderLayout.NORTH);
-        Menus.add(toolbar, BorderLayout.CENTER);
-        
-        return Menus;
+        return toolbar;
         
 	}
 	/**
@@ -416,7 +416,7 @@ public class SudokuDialog extends JFrame {
     /** Create an image icon from the given image file.
      *  @param filename 
      */
-    private ImageIcon createImageIcon(String filename) {
+    protected ImageIcon createImageIcon(String filename) {
         URL imageUrl = getClass().getResource(IMAGE_DIR + filename);
         if (imageUrl != null) {
             return new ImageIcon(imageUrl);
