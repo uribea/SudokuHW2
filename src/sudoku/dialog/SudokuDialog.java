@@ -67,7 +67,7 @@ public class SudokuDialog extends JFrame {
     }
     
     /** holds the values being attempted to be added to the board*/
-    int[] values = { -1, -1, -1};
+    protected int[] values = { -1, -1, -1};
     
     /** Create a new dialog of the given screen dimension. 
      * @param dim dimensions
