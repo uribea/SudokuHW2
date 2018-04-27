@@ -27,6 +27,8 @@ public class Solver {
 	 * @return boolean to see if board is solvable
 	 */
 	public boolean solve(){
+		//int[] ca = {0, 0,((int) Math.random()*9) + 1};
+		//board.setCoordinates(ca);
 		return solve(0, 0);
 	}
 	/**
