@@ -49,7 +49,7 @@ public class SudokuDialog extends JFrame {
     private JPanel buttons, menu;
     
     /** Sudoku board. */
-    private Board board;
+    protected Board board;
     Solver solver;
 
     /** Special panel to display a Sudoku board. */
@@ -109,7 +109,9 @@ public class SudokuDialog extends JFrame {
     	showMessage(String.format("hint = {%s}", s));
         else showMessage(String.format("Board clicked: x = %d, y = %d,",  x, y));
     }
-    
+    public void setValues(){
+    	 board.setCoordinates(values);
+    }
     /**
      * Callback to be invoked when a number button is clicked.
      * @param number Clicked number (1-9), or 0 for "X".
@@ -118,7 +120,7 @@ public class SudokuDialog extends JFrame {
     	if(values[0]!= -1 && values[1] != -1){
     		values[2] = number;
     		if (board.validCoordinates(values)){
-    			board.setCoordinates(values);//send data to board
+    			setValues();//send data to board
     			//reset values
     			values[0] = -1;
     			values[1] = -1;
