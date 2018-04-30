@@ -199,11 +199,16 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 
-		 infoArea = new JTextArea(6,30);
+		infoArea = new JTextArea(6,30);
+		JScrollPane scroll = new JScrollPane (infoArea);
+	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	          scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+ 
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		mainPanel.add(hostPanel);
 		mainPanel.add(peerPanel);
-		mainPanel.add(infoArea);
+		//mainPanel.add(infoArea);
+		mainPanel.add(scroll);
 		mainPanel.add(bottomPanel);
 
 
@@ -247,7 +252,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		new Thread(() -> {
 			try {
 				Socket socket = new Socket();
-				infoArea.append("Pairing...."); //change
+				infoArea.append("Pairing.... \n"); //change
 				System.out.println("Pairing....");
 				//FIXME
 				socket.connect(new InetSocketAddress(peerNameText.getText(), Integer.parseInt(peerPortNumberText.getText())), 5000);//?hardcoded //timeout in millis
