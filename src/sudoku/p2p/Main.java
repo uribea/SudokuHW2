@@ -110,7 +110,8 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 	}
 	
-	
+	private JTextField peerNameText;
+	private JTextField peerPortNumberText;
 	
 	private void createNetGui(int port) {
 
@@ -183,9 +184,11 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		//FIXME
 		//peer's values  changing them does not actually change value (i think)
 		JLabel peerNameLabel = new JLabel("Host Name/IP:");
-		JTextField peerNameText= new JTextField("127.0.0.1",20);
+		//JTextField 
+		peerNameText= new JTextField("127.0.0.1",20);
 		JLabel peerPortNumberLabel = new JLabel("Port Number:");
-		JTextField peerPortNumberText = new JTextField("9000", 20);
+		//JTextField 
+		peerPortNumberText = new JTextField("9000", 20);
 
 
 
@@ -247,7 +250,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 				infoArea.append("Pairing...."); //change
 				System.out.println("Pairing....");
 				//FIXME
-				socket.connect(new InetSocketAddress("172.19.158.215", 8001), 5000);//?hardcoded //timeout in millis
+				socket.connect(new InetSocketAddress(peerNameText.getText(), Integer.parseInt(peerPortNumberText.getText())), 5000);//?hardcoded //timeout in millis
 				pairAsClient(socket);
 			} catch(Exception ex) {}
 
