@@ -370,7 +370,6 @@ public class NetworkAdapter {
     private void parseMessage(String msg) {
         if (msg.startsWith(MessageType.QUIT.header)) {
                 notifyMessage(MessageType.QUIT);
-        } else if (msg.startsWith(MessageType.JOIN_ACK.header)) {
             parseJoinAckMessage(msgBody(msg));
         } else if (msg.startsWith(MessageType.JOIN.header)) {
             notifyMessage(MessageType.JOIN);

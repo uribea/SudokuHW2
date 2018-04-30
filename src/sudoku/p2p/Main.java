@@ -307,19 +307,28 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			//peer filled the square(x,y) with the number z
 			//super.fillNumber(x,y,z);
 			//super.numberClicked(z);
+			System.out.println("FILL");
+			values[0] = x;
+			values[1] = y;
+			values[2] = z;
+			board.setCoordinates(values);
 			break;
 
 
 
 		case JOIN:
-			//create board to share
+			//create board to share"
+			//System.out.println("JOIN");
 			network.writeJoin();
 			break;
 		case JOIN_ACK:
+			System.out.println("JOIN_ACK");
 			//create board to share
 			//Board newGame = new Board(board.getBoardSize());
 			//newGame.clone();
 			network.writeJoinAck(board.getSize());
+			
+			//bo
 			break;
 			
 		default:
