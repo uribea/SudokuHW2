@@ -115,8 +115,11 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 				s = new ServerSocket(finalPort);
 				System.out.println("port for server" + finalPort);
 				while(true) {
+					System.out.println("hi1");
 					Socket incoming = s.accept();
+					System.out.println("hi2");
 					infoArea.append("Pairing network \n");
+					System.out.println("hi3");
 					System.out.println("Pairing network....");
 					pairAsServer(incoming);
 					infoArea.append(incoming.toString() + "\n");
@@ -356,13 +359,20 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			//super.fillNumber(x,y,z);
 			//super.numberClicked(z);
 			System.out.println("FILL:");
+			int xtemp = values[0];
+			int ytemp = values[1];
 			values[0] = x;
 			values[1] = y;
 			values[2] = z;
 			infoArea.append("<= "+type +" "+ x  +" "+ y +" "+  z + "\n");
 			boardPanel.highlightPeer(x,y);
 			board.setCoordinates(values);
+			values[0] = xtemp;
+			values[1] = ytemp;
 			repaint();
+	        if(board.isSolved())
+	        	congratulate();
+			
 			break;
 
 
@@ -375,6 +385,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			//networkButton.setIcon(NETWORK_ON);
 			int[] square = board.getSquares();
 	    	if( JOptionPane.showConfirmDialog(msgBar, "Would you like to share your game", "Share", JOptionPane.YES_NO_OPTION) == 0){
+	    		//System.out.println("0");
 	    		wait.dispose();
 	    		network.writeJoinAck(board.size, square);
 				networkButton.setIcon(NETWORK_ON);
@@ -383,6 +394,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 					infoArea.append(i+",");
 	    	}
 	    	else{
+	    		wait.dispose();
 	    		network.writeJoinAck();
 	    		infoArea.append("=> "+"JOIN_ACK: " + 0 + " \n");
 	    	}
@@ -390,6 +402,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			break;
 		case JOIN_ACK:
 			System.out.println("JOIN_ACK");
+			if(x == 0){ System.out.println();System.out.println("hihihi"); break;}
 			networkButton.setIcon(NETWORK_ON);
 			infoArea.append("<= "+type + x +" "+ y +" ");
 				for(int i = 0; i < others.length; i++)

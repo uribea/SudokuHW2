@@ -143,7 +143,7 @@ public class SudokuDialog extends JFrame {
     /**
      * congradulates the user upon completion
      */
-    private void congratulate() {
+    protected void congratulate() {
     	int answer = JOptionPane.showConfirmDialog(msgBar, "Congratulations!!!! Continue?");
     	if( answer == 0) newClicked(board.size);
     	else if ( answer == 1) System.exit(0);
