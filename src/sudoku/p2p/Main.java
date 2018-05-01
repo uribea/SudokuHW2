@@ -110,6 +110,10 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 	}
 	
+	private void closingButtonClicked(ActionEvent e, JFrame frame) {
+		frame.setVisible(false);
+	}
+	
 	private JTextField peerNameText;
 	private JTextField peerPortNumberText;
 	
@@ -129,7 +133,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 		JFrame frame = new JFrame("Connection");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(400, 500));
 		//frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS ));
 		frame.setLayout(new BorderLayout());
@@ -233,7 +237,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 		bottomPanel.add(closeButton);
-
+		closeButton.addActionListener(e -> closingButtonClicked(e, frame));
 
 
 		frame.pack();
