@@ -79,7 +79,7 @@ public class SudokuDialog extends JFrame {
         boardPanel = new BoardPanel(board, this::boardClicked);
         configureUI();
         //setLocationRelativeTo(null);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         solver = new Solver(board,board.size);
         //setResizable(false);
