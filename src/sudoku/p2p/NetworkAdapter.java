@@ -538,6 +538,7 @@ public class NetworkAdapter {
      */
     public void writeNew(int size, int... squares) {
     	StringBuilder builder = new StringBuilder(MessageType.NEW.header);
+    	builder.append("1,");
     	builder.append(size);
     	for (int v: squares) {
     		builder.append(",");

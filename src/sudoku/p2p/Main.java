@@ -271,9 +271,11 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 
+	protected void newClicked(int size) {
+		super.newClicked(size);
+		network.writeJoinAck(board.size, board.getSquares());
+	}
 
-
-	
 
 	 
 	private void disconnectButtonClicked(ActionEvent e) {
@@ -412,19 +414,29 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			break;
 		case NEW:
 			System.out.println("NEW");
-			infoArea.append("<= "+type + x );
-				for(int i : others)// = 0; i < others.length; i++)
-					infoArea.append(others[i] + " ");
-				infoArea.append(" \n");
+			infoArea.append("<= "+type + x +" "+ y +" ");
+			for(int i = 0; i < others.length; i++)
+				infoArea.append(others[i] + " ");
+			infoArea.append(" \n");
 				if( JOptionPane.showConfirmDialog(msgBar, "Would you like to start a New Game", "New Game", JOptionPane.YES_NO_OPTION) == 0){
 		    		network.writeNewAck(true);
 		    		infoArea.append("=> "+"new_ACK: " + 1 + " \n");
-		    		newClicked(x, others);
+		    		newClicked(y, others);
 				}
 		    	else{
 		    		network.writeNewAck(false);
 		    		infoArea.append("=> "+"new_ACK: " + 0 + " \n");
 		    	}
+				break;
+				
+		case NEW_ACK: 
+			System.out.println("NEW_ACK");
+			infoArea.append("<= "+type + x +" "+ y +" ");
+				for(int i = 0; i < others.length; i++)
+					infoArea.append(others[i] + " ");
+				infoArea.append(" \n");
+			newClicked(y, others);
+			break;
 			
 		case CLOSE:
 			networkButton.setIcon(NETWORK_OFF);
