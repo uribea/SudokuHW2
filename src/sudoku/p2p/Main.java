@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -109,15 +110,13 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 				
 				//ServerSocket
 				s = new ServerSocket(finalPort);
-				networkButton.setIcon(NETWORK_ON);
-				//networkButtonOn();
 				System.out.println("port for server" + finalPort);
 				while(true) {
 					Socket incoming = s.accept();
-					infoArea.append("Pairing network");
+					infoArea.append("Pairing network \n");
 					System.out.println("Pairing network....");
 					pairAsServer(incoming);
-					infoArea.append(incoming.toString());
+					infoArea.append(incoming.toString() + "\n");
 				}
 			} catch(Exception ex) {}
 		}).start();
@@ -360,6 +359,19 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			//create board to share"
 			infoArea.append("<= "+type + "\n");
 			System.out.println("JOIN");
+			networkButton.setIcon(NETWORK_ON);
+			int[] square = board.getSquares();
+	    	if( JOptionPane.showConfirmDialog(msgBar, "Would You Like Share Your Game") == 0){
+	    		network.writeJoinAck(board.size, square);
+				networkButton.setIcon(NETWORK_ON);
+				infoArea.append("=> "+"JOIN_ACK: " + 1 + ","+board.size+",");
+				for(int i: board.getSquares())
+					infoArea.append(i+",");
+	    	}
+	    	else{
+	    		network.writeJoinAck();
+	    		infoArea.append("=> "+"JOIN_ACK: " + 0 + " \n");
+	    	}
 			//network.writeJoin();
 			break;
 		case JOIN_ACK:
@@ -367,7 +379,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			infoArea.append("<= "+type + x +" "+ y +" ");
 				for(int i = 0; i < others.length; i++)
 					infoArea.append(others[i] + " ");
-				infoArea.append("\n");
+				infoArea.append(" \n");
 			newClicked(y, others);
 			//create board to share
 			//Board newGame = new Board(board.getBoardSize());
@@ -377,6 +389,23 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			
 			//bo
 			break;
+		case NEW:
+			System.out.println("NEW");
+			infoArea.append("<= "+type + x );
+				for(int i : others)// = 0; i < others.length; i++)
+					infoArea.append(others[i] + " ");
+				infoArea.append(" \n");
+				if( JOptionPane.showConfirmDialog(msgBar, "Would You Like To Start A New Game") == 0){
+		    		network.writeNewAck(true);
+		    		infoArea.append("=> "+"new_ACK: " + 1 + " \n");
+		    		newClicked(x, others);
+				}
+		    	else{
+		    		network.writeNewAck(false);
+		    		infoArea.append("=> "+"new_ACK: " + 0 + " \n");
+		    	}
+			
+			
 			
 		default:
 			break;

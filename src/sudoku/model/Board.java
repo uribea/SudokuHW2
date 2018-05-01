@@ -34,6 +34,8 @@ public class Board {
 	/** keeps track of the head in the dll*/
 	CoordinatesDLL firstMove = null;
 	
+	
+	
 	/**
 	 * Constructor for board.
 	 * Default size of four.
@@ -345,5 +347,24 @@ public class Board {
 		if(x > size-1 || y > size-1) return false;
 		
 		return board[y][x] != 0;
+	}
+
+
+	public int[] getSquares() {
+		int[] squares = new int[4*size*size];
+		int istp = 4*size;
+		for(int i = 0; i< size; i++)
+			for(int j = 0; j< size; j++){
+				squares[i*istp+4*j] = j;
+				squares[i*istp+4*j + 1] = i;
+				squares[i*istp+4*j+2] = board[i][j];
+				if(lsValue[i][j])
+					squares[i*istp+4*j+3] = 1;
+				else
+					squares[i*istp+4*j+3] = 0;
+			}
+		for(int i : squares)
+			System.out.print(squares[i]+",");
+		return squares;
 	}
 }

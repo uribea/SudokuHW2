@@ -59,7 +59,7 @@ public class SudokuDialog extends JFrame {
     private boolean hintTog;
 
     /** Message bar to display various messages. */
-    private JLabel msgBar = new JLabel("");
+    protected JLabel msgBar = new JLabel("");
 
     /** Create a new dialog. */
     public SudokuDialog() {
