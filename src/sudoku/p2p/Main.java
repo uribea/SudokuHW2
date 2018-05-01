@@ -358,6 +358,11 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	}
 	
 	@Override
+	public void congratulate() {
+		JOptionPane.showMessageDialog(null, "Congrats!");
+	}
+	
+	@Override
 	public void setValues(boolean boo) {
 			board.setCoordinates(values, boo);
 		    //network;
