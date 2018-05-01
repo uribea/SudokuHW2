@@ -276,7 +276,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 	protected void newClicked(int size) {
 		super.newClicked(size);
-		network.writeJoinAck(board.size, board.getSquares());
+		network.writeNew(board.size, board.getSquares());
 	}
 
 
@@ -435,13 +435,13 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			for(int i = 0; i < others.length; i++)
 				infoArea.append(others[i] + " ");
 			infoArea.append(" \n");
-				if( JOptionPane.showConfirmDialog(msgBar, "Would you like to start a New Game", "New Game", JOptionPane.YES_NO_OPTION) == 0){
-		    		network.writeNewAck(true);
+				if( JOptionPane.showConfirmDialog(msgBar, "Would you like to start a New Game with Player", "New Game", JOptionPane.YES_NO_OPTION) == 0){
+					newClicked(x, others);
+		    		//network.writeNewAck(true);
 		    		infoArea.append("=> "+"new_ACK: " + 1 + " \n");
-		    		newClicked(y, others);
 				}
 		    	else{
-		    		network.writeNewAck(false);
+		    		//network.writeNewAck(false);
 		    		infoArea.append("=> "+"new_ACK: " + 0 + " \n");
 		    	}
 				break;
