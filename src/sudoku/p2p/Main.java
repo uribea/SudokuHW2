@@ -1,10 +1,8 @@
 package sudoku.p2p;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -21,14 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
-import javax.swing.text.DefaultCaret;
-
 import sudoku.dialog.SudokuDialog;
 
 
@@ -39,7 +33,7 @@ import sudoku.dialog.SudokuDialog;
 public class Main extends SudokuDialog implements NetworkAdapter.MessageListener{
 	private ImageIcon NETWORK_OFF, NETWORK_ON;
 	private JButton networkButton;
-	private NetworkAdapter network;// = new NetworkAdapter();
+	private NetworkAdapter network;
 
 	private JButton connectButton;
 	private JTextField serverEdit;
@@ -48,8 +42,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	private JTextField msgEdit;
 	private JButton sendButton;
 	private JTextArea infoArea;
-	private JToolBar toolBar; //= super.createToolBar();
-	//private boolean boo = false;
+	private JToolBar toolBar;
 	
 	protected JToolBar createToolBar() {
 		//JToolBar 
@@ -57,7 +50,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		NETWORK_OFF = createImageIcon("wifi-orange-right-hi.png");
 		NETWORK_ON = createImageIcon("blue.png");
 		networkButton = new JButton(NETWORK_OFF);
-		//System.out.println(boo);
 		networkButton.addActionListener(this::networkButtonClicked);
 		networkButton.setToolTipText("Pair");
 		networkButton.setFocusPainted(false);
@@ -106,7 +98,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		while(!portAvailable(port)){
 			++port;
 		}
-		//final int 
 		finalPort = port;
 		createNetGui(finalPort);
 		new Thread(() -> {
@@ -132,7 +123,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	}
 	
 
-	private void closingButtonClicked(ActionEvent e){//, JFrame frame) {
+	private void closingButtonClicked(ActionEvent e){
 		try {
 			s.close();
 		} catch (IOException e1) {
@@ -145,16 +136,14 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	private JTextField peerNameText;
 	private JTextField peerPortNumberText;
 	private JFrame frame;
-	InetAddress inet;// = null;
-	String hostName;// = null;
-	String addr; //s= null;
+	InetAddress inet;
+	String hostName;
+	String addr;
 	private void createNetGui(int port) {
 
 		//InetAddress 
-		inet = null;
-		//String 
+		inet = null; 
 		hostName = null;
-		//String 
 		addr = null;
 		try {
 			inet = InetAddress.getLocalHost();
@@ -170,7 +159,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		frame = new JFrame("Connection");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(400, 500));
-		//frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS ));
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 
@@ -178,8 +166,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 16, 0, 16));
-		//mainPanel.setPreferredSize(new Dimension(300, 450));
-		//mainPanel.setLayout(new GridLayout(0,1,10,10));
 		mainPanel.setLayout(new FlowLayout());
 
 
@@ -208,11 +194,9 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		bottomPanel.setPreferredSize(new Dimension(350, 125));
 
 
-		//NOTHARDCODDEDANYMOREYAY
 		JLabel hostNameLabel = new JLabel("Host Name:");
 		JTextField hostNameText = new JTextField(hostName,20);
 		hostNameText.setEditable(false);
-		//hostNameText.setPreferredSize(new Dimension(120, 20));
 		JLabel hostIpNameLabel = new JLabel("IP Number:");
 		JTextField hostIpNameText= new JTextField(addr,20);
 		hostIpNameText.setEditable(false);
@@ -220,13 +204,9 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		JTextField hostPortNumberText= new JTextField(Integer.toString(port), 20);
 		hostPortNumberText.setEditable(false);
 
-		//FIXME
-		//peer's values  changing them does not actually change value (i think)
 		JLabel peerNameLabel = new JLabel("Host Name/IP:");
-		//JTextField 
 		peerNameText= new JTextField("10.0.3.7",20);
 		JLabel peerPortNumberLabel = new JLabel("Port Number:");
-		//JTextField 
 		peerPortNumberText = new JTextField("8001", 20);
 
 
@@ -237,7 +217,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		JButton disconnectButton = new JButton("Disconnect");
 		
 		JButton closeButton = new JButton("Close");
-		closeButton.addActionListener(e -> closingButtonClicked(e));// frame));
+		closeButton.addActionListener(e -> closingButtonClicked(e));
 
 
 
@@ -249,7 +229,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		mainPanel.add(hostPanel);
 		mainPanel.add(peerPanel);
-		//mainPanel.add(infoArea);
 		mainPanel.add(scroll);
 		mainPanel.add(bottomPanel);
 
@@ -272,7 +251,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		buttonPanel.add(disconnectButton);
 		peerPanel.add(buttonPanel);
 		
-		disconnectButton.addActionListener(e -> disconnectButtonClicked());// frame));
+		disconnectButton.addActionListener(e -> disconnectButtonClicked());
 
 		bottomPanel.add(closeButton);
 
@@ -291,7 +270,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 	 
 	private void disconnectButtonClicked() {
-		// TODO Auto-generated method stub
 		try {
 			network.close();
 			infoArea.append("Disconnected \n");
@@ -307,19 +285,17 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		new Thread(() -> {
 			try {
 				Socket socket = new Socket();
-				infoArea.append("Pairing.... \n"); //change
+				infoArea.append("Pairing.... \n");
 				System.out.println("Pairing....");
-				//FIXME
 				String s = peerNameText.getText();
 				int portn = Integer.parseInt(peerPortNumberText.getText());
-				//System.out.println(s.equals(inet.getHostAddress()) + "|" + s+"|" + "|" + inet +"|");// && portn.equals(hostPortNumberText));
 				if(s.equals(inet.getHostAddress()) && portn == finalPort){
 					JOptionPane.showMessageDialog(null, "Dont Connect to Self");
 					disconnectButtonClicked();
 					infoArea.append("Disconnected \n");
 					return;
 				}
-				socket.connect(new InetSocketAddress(s, portn), 5000);//?hardcoded //timeout in millis
+				socket.connect(new InetSocketAddress(s, portn), 5000);
 				pairAsClient(socket);
 			} catch(Exception ex) {}
 
@@ -365,37 +341,21 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	@Override
 	public void setValues(boolean boo) {
 			board.setCoordinates(values, boo);
-		    //network;
 			if (network != null) { network.writeFill(values[0], values[1], values[2]); } 
 	}
 
-		/*   //Called when a message is received from the peer.
-	  public void messageReceived(MessageType type, int x, int y, int z, int[] others) {
-	    switch (type) {
-	      case FILL:
-	        // peer filled the square (x, y) with the number z
-	        super.setCoordinates();
-	        break;
-	      //…
-	    }
-	  }
-	  */
-	private void pairAsClient(Socket socket) { //synch
+	private void pairAsClient(Socket socket) { //sync
 		   network = new NetworkAdapter(socket);
-		   network.setMessageListener(this); // see the next slide
+		   network.setMessageListener(this);
 		   network.writeJoin();
 		   network.receiveMessages(); // loop till disconnected
-		   //?network.recieveMessagesAsync();
 	}		
 	
-	private void pairAsServer(Socket socket) { //synch
+	private void pairAsServer(Socket socket) { //sync
 		   network = new NetworkAdapter(socket);
-		   network.setMessageListener(this); // see the next slide
-		   //?network.writeJoin();
+		   network.setMessageListener(this);
 		   network.receiveMessages(); // loop till disconnected
-		  // network.receiveMessagesAsync();
 		}
-		//private NetworkAdapter network;
 	
 	
 	
@@ -412,10 +372,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		System.out.println(type);
 		switch(type) {
 		case FILL:
-			//TODO
-			//peer filled the square(x,y) with the number z
-			//super.fillNumber(x,y,z);
-			//super.numberClicked(z);
 			System.out.println("FILL:");
 			int xtemp = values[0];
 			int ytemp = values[1];
@@ -441,10 +397,8 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			waitingForJoin();
 			infoArea.append("<= "+type + "\n");
 			System.out.println("JOIN");
-			//networkButton.setIcon(NETWORK_ON);
 			int[] square = board.getSquares();
 	    	if( JOptionPane.showConfirmDialog(msgBar, "Would you like to share your game", "Share", JOptionPane.YES_NO_OPTION) == 0){
-	    		//System.out.println("0");
 	    		wait.dispose();
 	    		network.writeJoinAck(board.size, square);
 				networkButton.setIcon(NETWORK_ON);
@@ -457,7 +411,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	    		network.writeJoinAck();
 	    		infoArea.append("=> "+"JOIN_ACK: " + 0 + " \n");
 	    	}
-			//network.writeJoin();
 			break;
 		case JOIN_ACK:
 			System.out.println("JOIN_ACK");
@@ -471,13 +424,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 					infoArea.append(others[i] + " ");
 				infoArea.append(" \n");
 			newClicked(y, others);
-			//create board to share
-			//Board newGame = new Board(board.getBoardSize());
-			//newGame.clone();
-			
-			//network.writeJoinAck(board.getSize());
-			
-			//bo
 			break;
 		case NEW:
 			System.out.println("NEW");
@@ -487,11 +433,9 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			infoArea.append(" \n");
 				if( JOptionPane.showConfirmDialog(msgBar, "Would you like to start a New Game with Player", "New Game", JOptionPane.YES_NO_OPTION) == 0){
 					newClicked(x, others);
-		    		//network.writeNewAck(true);
 		    		infoArea.append("=> "+"new_ACK: " + 1 + " \n");
 				}
 		    	else{
-		    		//network.writeNewAck(false);
 		    		try {
 		    			network.close();
 		    			infoArea.append("Disconnected \n");
@@ -528,7 +472,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	private void waitingForJoin() {
 		 wait = new JFrame("Share");
 
-		ImageIcon waiting = createImageIcon("searching.gif");
+		ImageIcon waiting = createImageIcon("91.gif");
 	    wait.add(new JLabel("Waiting for other player"), BorderLayout.NORTH);
 	    wait.add(new JLabel(waiting));
 
