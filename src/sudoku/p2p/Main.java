@@ -44,11 +44,16 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	private JTextField msgEdit;
 	private JButton sendButton;
 	private JTextArea infoArea;
-
+	private JToolBar toolBar; //= super.createToolBar();
+	private boolean boo = false;
+	
 	protected JToolBar createToolBar() {
-		JToolBar toolBar = super.createToolBar();
+		//JToolBar 
+		toolBar = super.createToolBar();
 		NETWORK_OFF = createImageIcon("wifi-orange-right-hi.png");
+		NETWORK_ON = createImageIcon("play.png");
 		networkButton = new JButton(NETWORK_OFF);
+		System.out.println(boo);
 		networkButton.addActionListener(this::networkButtonClicked);
 		networkButton.setToolTipText("Pair");
 		networkButton.setFocusPainted(false);
@@ -83,8 +88,14 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
     return false;
 }
+	private ServerSocket s;
 	private void networkButtonClicked(ActionEvent e) { 
-		
+		try{
+			s.close();
+			frame.dispose();
+		}catch(Exception e1){
+			
+		}
 		int port;
 		port = 8000;
 		while(!portAvailable(port)){
@@ -95,8 +106,11 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		new Thread(() -> {
 			try {
 				System.out.println("Server started....");
-
-				ServerSocket s = new ServerSocket(finalPort);
+				
+				//ServerSocket
+				s = new ServerSocket(finalPort);
+				networkButton.setIcon(NETWORK_ON);
+				//networkButtonOn();
 				System.out.println("port for server" + finalPort);
 				while(true) {
 					Socket incoming = s.accept();
@@ -110,13 +124,19 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 	}
 	
-	private void closingButtonClicked(ActionEvent e, JFrame frame) {
-		frame.setVisible(false);
+
+	private void closingButtonClicked(ActionEvent e){//, JFrame frame) {
+		try {
+			s.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		frame.dispose();
 	}
 	
 	private JTextField peerNameText;
 	private JTextField peerPortNumberText;
-	
+	private JFrame frame;
 	private void createNetGui(int port) {
 
 		InetAddress i = null;
@@ -132,7 +152,8 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 
-		JFrame frame = new JFrame("Connection");
+		//JFrame 
+		frame = new JFrame("Connection");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(400, 500));
 		//frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS ));
@@ -237,7 +258,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 		bottomPanel.add(closeButton);
-		closeButton.addActionListener(e -> closingButtonClicked(e, frame));
+		closeButton.addActionListener(e -> closingButtonClicked(e));// frame));
 
 
 		frame.pack();
