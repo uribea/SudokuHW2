@@ -413,7 +413,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		    	}
 			
 			
-			
 		default:
 			break;
 		}
