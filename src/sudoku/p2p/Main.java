@@ -49,15 +49,15 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	private JButton sendButton;
 	private JTextArea infoArea;
 	private JToolBar toolBar; //= super.createToolBar();
-	private boolean boo = false;
+	//private boolean boo = false;
 	
 	protected JToolBar createToolBar() {
 		//JToolBar 
 		toolBar = super.createToolBar();
 		NETWORK_OFF = createImageIcon("wifi-orange-right-hi.png");
-		NETWORK_ON = createImageIcon("play.png");
+		NETWORK_ON = createImageIcon("blue.png");
 		networkButton = new JButton(NETWORK_OFF);
-		System.out.println(boo);
+		//System.out.println(boo);
 		networkButton.addActionListener(this::networkButtonClicked);
 		networkButton.setToolTipText("Pair");
 		networkButton.setFocusPainted(false);
@@ -259,8 +259,8 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		buttonPanel.add(connectButton);
 		buttonPanel.add(disconnectButton);
 		peerPanel.add(buttonPanel);
-
-
+		
+		disconnectButton.addActionListener(e -> disconnectButtonClicked());// frame));
 
 		bottomPanel.add(closeButton);
 
@@ -276,6 +276,11 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	
 
 	 
+	private Object disconnectButtonClicked() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private void connectClicked(ActionEvent e) { 
 
 		new Thread(() -> {
@@ -330,7 +335,9 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		  // network.receiveMessagesAsync();
 		}
 		//private NetworkAdapter network;
-
+	
+	
+	
 	public static void main(String[] args){
 		new Main();
 	}
@@ -365,7 +372,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			waitingForJoin();
 			infoArea.append("<= "+type + "\n");
 			System.out.println("JOIN");
-			networkButton.setIcon(NETWORK_ON);
+			//networkButton.setIcon(NETWORK_ON);
 			int[] square = board.getSquares();
 	    	if( JOptionPane.showConfirmDialog(msgBar, "Would you like to share your game", "Share", JOptionPane.YES_NO_OPTION) == 0){
 	    		wait.dispose();
@@ -383,6 +390,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			break;
 		case JOIN_ACK:
 			System.out.println("JOIN_ACK");
+			networkButton.setIcon(NETWORK_ON);
 			infoArea.append("<= "+type + x +" "+ y +" ");
 				for(int i = 0; i < others.length; i++)
 					infoArea.append(others[i] + " ");
@@ -412,6 +420,9 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		    		infoArea.append("=> "+"new_ACK: " + 0 + " \n");
 		    	}
 			
+		case CLOSE:
+			networkButton.setIcon(NETWORK_OFF);
+			break;
 			
 		default:
 			break;
