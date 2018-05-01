@@ -359,7 +359,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	
 	@Override
 	public void congratulate() {
-		JOptionPane.showMessageDialog(null, "Congrats!");
+		JOptionPane.showMessageDialog(null, "Congratulations!");
 	}
 	
 	@Override
