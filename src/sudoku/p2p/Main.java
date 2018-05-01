@@ -30,9 +30,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultCaret;
 
 import sudoku.dialog.SudokuDialog;
-
-
-
+import sudoku.model.Board;
+import sudoku.model.Solver;
 import sudoku.dialog.SudokuDialog;
 
 @SuppressWarnings("serial")
@@ -283,9 +282,19 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 
+	@Override
 	protected void newClicked(int size) {
-		super.newClicked(size);
-		network.writeNew(board.size, board.getSquares());
+    	showMessage("New clicked: " + size);
+    	if( JOptionPane.showConfirmDialog(msgBar, "Would You Like To Play A New Game") == 0){
+    		board = new Board(size); 
+    		boardPanel.setBoard(board);
+            solver = new Solver(board,size);
+            if(network != null) network.writeNew(board.size, board.getSquares());
+
+    	}
+    	repaint();
+    
+		
 	}
 
 
