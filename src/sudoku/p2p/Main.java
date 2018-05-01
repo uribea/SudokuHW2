@@ -1,6 +1,7 @@
 package sudoku.p2p;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.TrayIcon.MessageType;
@@ -20,10 +21,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultCaret;
 
 import sudoku.dialog.SudokuDialog;
@@ -218,8 +221,11 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 		JButton connectButton = new JButton("Connect"); //start a client - add listeners
 		connectButton.addActionListener(e-> {connectClicked(e);});
+		
 		JButton disconnectButton = new JButton("Disconnect");
+		
 		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(e -> closingButtonClicked(e));// frame));
 
 
 
@@ -257,7 +263,6 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 		bottomPanel.add(closeButton);
-		closeButton.addActionListener(e -> closingButtonClicked(e));// frame));
 
 
 		frame.pack();
@@ -357,11 +362,13 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 		case JOIN:
 			//create board to share"
+			waitingForJoin();
 			infoArea.append("<= "+type + "\n");
 			System.out.println("JOIN");
 			networkButton.setIcon(NETWORK_ON);
 			int[] square = board.getSquares();
-	    	if( JOptionPane.showConfirmDialog(msgBar, "Would You Like Share Your Game") == 0){
+	    	if( JOptionPane.showConfirmDialog(msgBar, "Would you like to share your game", "Share", JOptionPane.YES_NO_OPTION) == 0){
+	    		wait.dispose();
 	    		network.writeJoinAck(board.size, square);
 				networkButton.setIcon(NETWORK_ON);
 				infoArea.append("=> "+"JOIN_ACK: " + 1 + ","+board.size+",");
@@ -395,7 +402,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 				for(int i : others)// = 0; i < others.length; i++)
 					infoArea.append(others[i] + " ");
 				infoArea.append(" \n");
-				if( JOptionPane.showConfirmDialog(msgBar, "Would You Like To Start A New Game") == 0){
+				if( JOptionPane.showConfirmDialog(msgBar, "Would you like to start a New Game", "New Game", JOptionPane.YES_NO_OPTION) == 0){
 		    		network.writeNewAck(true);
 		    		infoArea.append("=> "+"new_ACK: " + 1 + " \n");
 		    		newClicked(x, others);
@@ -414,4 +421,16 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		
 	}
 	
+	JFrame wait;
+	private void waitingForJoin() {
+		 wait = new JFrame("Share");
+
+		ImageIcon waiting = createImageIcon("searching.gif");
+	    wait.add(new JLabel("Waiting for other player"), BorderLayout.NORTH);
+	    wait.add(new JLabel(waiting));
+
+	    wait.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    wait.setSize(350, 300);
+	    wait.setVisible(true);
+	}
 }
