@@ -260,7 +260,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		buttonPanel.add(disconnectButton);
 		peerPanel.add(buttonPanel);
 		
-		disconnectButton.addActionListener(e -> disconnectButtonClicked());// frame));
+		disconnectButton.addActionListener(e -> disconnectButtonClicked(e));// frame));
 
 		bottomPanel.add(closeButton);
 
@@ -276,9 +276,15 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	
 
 	 
-	private Object disconnectButtonClicked() {
+	private void disconnectButtonClicked(ActionEvent e) {
 		// TODO Auto-generated method stub
-		return null;
+		try {
+			network.close();
+			infoArea.append("Disconnected \n");
+			return;
+		} catch(Exception ex) {
+			
+		}
 	}
 
 	private void connectClicked(ActionEvent e) { 
@@ -422,6 +428,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			
 		case CLOSE:
 			networkButton.setIcon(NETWORK_OFF);
+			
 			break;
 			
 		default:
