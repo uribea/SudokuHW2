@@ -132,35 +132,39 @@ public class Board {
 	/**
 	 * undos to the previous state of the board
 	 */
-	public void undo(){
+	
+	public int[] undo(){
 		
 		int[] c ={cDLL.x, cDLL.y, cDLL.before};
 		if (c[2] == 0) emptySquares++;
 		if (board[c[1]][c[0]] == 0) emptySquares--;
-		board[c[1]][c[0]] = c[2];
+		//board[c[1]][c[0]] = c[2];
 		cDLL = cDLL.prev;
-		
+		return c;
 		
 	}
 	
 	/**used as a redo function in the board
 	 * undos an undo
 	 */
-	public void redo(){
+	public int[] redo(){
 		if(cDLL == null){
 			int[] c ={firstMove.x, firstMove.y, firstMove.after};
 			if (c[2] == 0) emptySquares++;
 			if (board[c[1]][c[0]] == 0) emptySquares--;
-			board[c[1]][c[0]] = c[2];
+			//board[c[1]][c[0]] = c[2];
 			cDLL = firstMove;
+			return c;
 		}
 		
 		else{ cDLL = cDLL.next;
 			int[] c ={cDLL.x, cDLL.y, cDLL.after};
 			if (c[2] == 0) emptySquares++;
 			if (board[c[1]][c[0]] == 0) emptySquares--;
-			board[c[1]][c[0]] = c[2];
+			//board[c[1]][c[0]] = c[2];
+			return c;
 		}
+//		return c;
 	}
 	
 	/**
@@ -316,8 +320,8 @@ public class Board {
 	/** sets the coordinates on the board after the validation is passed
 	 *  @param c the coordinates being added
 	 */
-	public void setCoordinates(int[] c){
-		if (!starting) addC(c);
+	public void setCoordinates(int[] c, boolean boo){
+		if (!starting && boo) addC(c);
 		if (c[2] == 0) emptySquares++;
 		if (board[c[1]][c[0]] == 0) emptySquares--;
 		board[c[1]][c[0]] = c[2];

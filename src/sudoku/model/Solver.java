@@ -56,13 +56,13 @@ public class Solver {
 				//System.out.println(y+ " " +x + " "+i);
 				int[] ca = {x,y,i};
 				if (board.validCoordinates(ca)){
-					board.setCoordinates(ca);
+					board.setCoordinates(ca, true);
 					if(solve(xN, yN)) return true;
 					else{
 						ca[0] = x;
 						ca[1] = y;
 						ca[2] = 0;
-						board.setCoordinates(ca);
+						board.setCoordinates(ca, true);
 					}
 				}
 				

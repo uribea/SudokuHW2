@@ -263,7 +263,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		buttonPanel.add(disconnectButton);
 		peerPanel.add(buttonPanel);
 		
-		disconnectButton.addActionListener(e -> disconnectButtonClicked(e));// frame));
+		disconnectButton.addActionListener(e -> disconnectButtonClicked());// frame));
 
 		bottomPanel.add(closeButton);
 
@@ -281,7 +281,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 
 	 
-	private void disconnectButtonClicked(ActionEvent e) {
+	private void disconnectButtonClicked() {
 		// TODO Auto-generated method stub
 		try {
 			network.close();
@@ -313,8 +313,8 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	}
 	
 	@Override
-	public void setValues() {
-			board.setCoordinates(values);
+	public void setValues(boolean boo) {
+			board.setCoordinates(values, boo);
 		    //network;
 			if (network != null) { network.writeFill(values[0], values[1], values[2]); } 
 	}
@@ -374,7 +374,8 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			values[2] = z;
 			infoArea.append("<= "+type +" "+ x  +" "+ y +" "+  z + "\n");
 			boardPanel.highlightPeer(x,y);
-			board.setCoordinates(values);
+			board.setCoordinates(values, true);
+
 			values[0] = xtemp;
 			values[1] = ytemp;
 			repaint();
@@ -410,7 +411,10 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			break;
 		case JOIN_ACK:
 			System.out.println("JOIN_ACK");
-			if(x == 0){ System.out.println();System.out.println("hihihi"); break;}
+			if(x == 0){ 
+				System.out.println("Reject JOIN");
+				disconnectButtonClicked();
+				break;}
 			networkButton.setIcon(NETWORK_ON);
 			infoArea.append("<= "+type + x +" "+ y +" ");
 				for(int i = 0; i < others.length; i++)

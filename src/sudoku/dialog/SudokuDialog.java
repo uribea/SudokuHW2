@@ -109,8 +109,8 @@ public class SudokuDialog extends JFrame {
     	showMessage(String.format("hint = {%s}", s));
         else showMessage(String.format("Board clicked: x = %d, y = %d,",  x, y));
     }
-    public void setValues(){
-    	 board.setCoordinates(values);
+    public void setValues(boolean boo){
+    	 board.setCoordinates(values, boo);
     }
     /**
      * Callback to be invoked when a number button is clicked.
@@ -120,7 +120,7 @@ public class SudokuDialog extends JFrame {
     	if(values[0]!= -1 && values[1] != -1){
     		values[2] = number;
     		if (board.validCoordinates(values)){
-    			setValues();//send data to board
+    			setValues(true);//send data to board
     			//reset values
     			values[0] = -1;
     			values[1] = -1;
@@ -177,7 +177,10 @@ public class SudokuDialog extends JFrame {
      * undos to the previous board construction
      */
     private void undo(){
-    	if (board.undoExists()) board.undo();
+    	if (board.undoExists()) {
+    		values = board.undo();
+    		setValues(false);
+    		}
     	else errSound();
     	repaint();
     }
@@ -186,7 +189,10 @@ public class SudokuDialog extends JFrame {
      * undos an undo
      */
     private void redo(){
-    	if (board.redoExists()) board.redo();
+    	if (board.redoExists()) {
+    		values = board.redo();
+    		setValues(false);
+    		}
     	else errSound();
        	repaint();
     }
