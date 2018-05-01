@@ -93,6 +93,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
     return false;
 }
 	private ServerSocket s;
+	private int finalPort = 8000;
 	private void networkButtonClicked(ActionEvent e) { 
 		try{
 			s.close();
@@ -105,7 +106,8 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		while(!portAvailable(port)){
 			++port;
 		}
-		final int finalPort = port;
+		//final int 
+		finalPort = port;
 		createNetGui(finalPort);
 		new Thread(() -> {
 			try {
@@ -138,19 +140,26 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		}
 		frame.dispose();
 	}
-	
+	private JTextField hostIpNameText;
+	private JTextField hostPortNumberText;
 	private JTextField peerNameText;
 	private JTextField peerPortNumberText;
 	private JFrame frame;
+	InetAddress inet;// = null;
+	String hostName;// = null;
+	String addr; //s= null;
 	private void createNetGui(int port) {
 
-		InetAddress i = null;
-		String hostName = null;
-		String addr = null;
+		//InetAddress 
+		inet = null;
+		//String 
+		hostName = null;
+		//String 
+		addr = null;
 		try {
-			i = InetAddress.getLocalHost();
-			hostName = i.getHostName();
-			addr = i.getHostAddress();
+			inet = InetAddress.getLocalHost();
+			hostName = inet.getHostName();
+			addr = inet.getHostAddress();
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
@@ -292,6 +301,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		}
 	}
 
+	@SuppressWarnings("resource")
 	private void connectClicked(ActionEvent e) { 
 
 		new Thread(() -> {
@@ -300,7 +310,16 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 				infoArea.append("Pairing.... \n"); //change
 				System.out.println("Pairing....");
 				//FIXME
-				socket.connect(new InetSocketAddress(peerNameText.getText(), Integer.parseInt(peerPortNumberText.getText())), 5000);//?hardcoded //timeout in millis
+				String s = peerNameText.getText();
+				int portn = Integer.parseInt(peerPortNumberText.getText());
+				//System.out.println(s.equals(inet.getHostAddress()) + "|" + s+"|" + "|" + inet +"|");// && portn.equals(hostPortNumberText));
+				if(s.equals(inet.getHostAddress()) && portn == finalPort){
+					JOptionPane.showMessageDialog(null, "Dont Connect to Self");
+					disconnectButtonClicked();
+					infoArea.append("Disconnected \n");
+					return;
+				}
+				socket.connect(new InetSocketAddress(s, portn), 5000);//?hardcoded //timeout in millis
 				pairAsClient(socket);
 			} catch(Exception ex) {}
 
