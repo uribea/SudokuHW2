@@ -345,6 +345,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 					System.out.println("studf3456");
 					network.writeFill(b[i], b[i+1], b[i+2]); 
 					System.out.println(i+3);
+			
 				}
 			}
 			repaint();
