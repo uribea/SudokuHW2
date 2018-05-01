@@ -332,6 +332,31 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 	}
 	
 	@Override
+	protected void solve(){
+		if(solver.solve()){
+			System.out.println("SOLVE");
+			showMessage("Solved");
+			if (network != null){
+				System.out.println("studf");
+				int[] b = board.getSquares();
+				System.out.println(b.length);
+				System.out.println("bsquare");
+				for(int i = 0; i < b.length; i+=4){
+					System.out.println("studf3456");
+					network.writeFill(b[i], b[i+1], b[i+2]); 
+					System.out.println(i+3);
+				}
+			}
+			repaint();
+			congratulate();
+		}
+		else {showMessage("Not Solvable");
+			errSound();
+		}
+		repaint();
+	}
+	
+	@Override
 	public void setValues(boolean boo) {
 			board.setCoordinates(values, boo);
 		    //network;

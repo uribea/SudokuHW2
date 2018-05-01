@@ -50,7 +50,7 @@ public class SudokuDialog extends JFrame {
     
     /** Sudoku board. */
     protected Board board;
-    Solver solver;
+    protected Solver solver;
 
     /** Special panel to display a Sudoku board. */
     public BoardPanel boardPanel;
@@ -201,7 +201,7 @@ public class SudokuDialog extends JFrame {
      * Display the given string in the message bar.
      * @param msg Message to be displayed.
      */
-    private void showMessage(String msg) {
+    protected void showMessage(String msg) {
         msgBar.setText(msg);
     }
 
@@ -360,7 +360,7 @@ public class SudokuDialog extends JFrame {
 	 * solves the board
 	 * plays error sound if not solvable to begin with
 	 */
-	private void solve() {
+	protected void solve() {
 		if(solver.solve()){
 			showMessage("Solved");
 			repaint();
@@ -440,7 +440,7 @@ public class SudokuDialog extends JFrame {
 
 
     /** Play error sound*/
-    private static void errSound() {        
+    protected static void errSound() {        
     	try{
     		AudioInputStream audioIS = AudioSystem.getAudioInputStream(new File("beep-01a.wav"));
             Clip sClip = AudioSystem.getClip();  

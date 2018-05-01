@@ -235,6 +235,8 @@ public class NetworkAdapter {
          * @param others Additional aruguments
          */
         void messageReceived(MessageType type, int x, int y, int z, int[] others);
+
+
     }
 
     private static final int[] EMPTY_INT_ARRAY = new int[0];
