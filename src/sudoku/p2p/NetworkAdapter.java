@@ -370,7 +370,9 @@ public class NetworkAdapter {
     private void parseMessage(String msg) {
         if (msg.startsWith(MessageType.QUIT.header)) {
                 notifyMessage(MessageType.QUIT);
-            parseJoinAckMessage(msgBody(msg));
+            //parseJoinAckMessage(msgBody(msg));
+        } else if (msg.startsWith(MessageType.JOIN_ACK.header)) {
+        	parseJoinAckMessage(msgBody(msg)); 
         } else if (msg.startsWith(MessageType.JOIN.header)) {
             notifyMessage(MessageType.JOIN);
         } else if (msg.startsWith(MessageType.NEW_ACK.header)) {
@@ -397,7 +399,7 @@ public class NetworkAdapter {
 
     /** Parse and notify the given play_ack message body. */
     private void parseJoinAckMessage(String msgBody) {
-        String[] parts = msgBody.split(",");
+    	String[] parts = msgBody.split(",");
         if (parts.length >= 1) {
         	// message: join_ack 0
         	int response = parseInt(parts[0].trim());

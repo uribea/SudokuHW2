@@ -71,6 +71,34 @@ public class Board {
 		starting = false;
 		
 	}
+	
+	public Board(int size, int[] others){
+		Solver solver = new Solver(Board.this, size);
+		starting = true;
+		this.size = size;
+		subsize = (int)Math.sqrt((double)size);
+		emptySquares = (size * size);
+		board = new int[size][size];
+		
+		//int lsValuesNum = numlsValues();
+		lsValue = new boolean[size][size];//0=x, 1=y, 2=v
+		solver.solve();
+		removeValues();
+	
+		setLockedCoordinates(others);
+		emptySquares = (size * size) - others.length/4;
+		
+		starting = false;
+		
+	}
+	
+	private void removeValues() {
+		for(int i =0; i < size; i++)
+			for(int j =0; j < size; j++)
+				board[i][j] = 0;
+	}
+
+
 	/**
 	 * checks if its possible to undo
 	 * @return boolean, if it can or cannot
@@ -184,6 +212,28 @@ public class Board {
 					lsValue[i][j] = true;
 				}
 			}
+		}
+	}
+	
+	private void setLockedCoordinates(int[] others){
+		//int x = 0;
+		int x = 0;
+		int y = 0; 
+		int z = 0;
+		for(int i = 0; i < others.length; ++i){
+				if(i%4 == 0)
+					y = others[i];
+				else if(i%4 == 1)
+					x = others[i];
+				else if(i%4 == 2)
+					z = others[i];
+				else if(i%4 == 3)
+					if(others[i] == 1){
+						board[x][y] = z;
+						lsValue[x][y] = true;
+					}
+					else 
+						board[x][y] = z;
 		}
 
 	}

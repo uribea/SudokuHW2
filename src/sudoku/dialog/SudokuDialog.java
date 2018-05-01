@@ -157,7 +157,7 @@ public class SudokuDialog extends JFrame {
      * accordingly.
      * @param size Requested puzzle size, either 4 or 9.
      */
-    private void newClicked(int size) {
+    protected void newClicked(int size) {
     	showMessage("New clicked: " + size);
     	if( JOptionPane.showConfirmDialog(msgBar, "Would You Like To Play A New Game") == 0){
     		board = new Board(size); 
@@ -165,6 +165,12 @@ public class SudokuDialog extends JFrame {
             solver = new Solver(board,size);
 
     	}
+    	repaint();
+    }
+    protected void newClicked(int size, int[] others) {
+    	board = new Board(size, others); 
+    	boardPanel.setBoard(board);
+        solver = new Solver(board,size);    	
     	repaint();
     }
     /**

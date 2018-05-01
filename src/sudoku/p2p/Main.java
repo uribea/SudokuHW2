@@ -210,10 +210,10 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		//peer's values  changing them does not actually change value (i think)
 		JLabel peerNameLabel = new JLabel("Host Name/IP:");
 		//JTextField 
-		peerNameText= new JTextField("127.0.0.1",20);
+		peerNameText= new JTextField("10.0.3.7",20);
 		JLabel peerPortNumberLabel = new JLabel("Port Number:");
 		//JTextField 
-		peerPortNumberText = new JTextField("8000", 20);
+		peerPortNumberText = new JTextField("8001", 20);
 
 
 
@@ -331,19 +331,24 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		new Main();
 	}
 	
+	public void addMessage(String msg){
+		
+	}
+	
 	@Override
 	public void messageReceived(sudoku.p2p.NetworkAdapter.MessageType type, int x, int y, int z, int[] others) {
-
+		System.out.println(type);
 		switch(type) {
 		case FILL:
 			//TODO
 			//peer filled the square(x,y) with the number z
 			//super.fillNumber(x,y,z);
 			//super.numberClicked(z);
-			System.out.println("FILL");
+			System.out.println("FILL:");
 			values[0] = x;
 			values[1] = y;
 			values[2] = z;
+			infoArea.append("<= "+type +" "+ x  +" "+ y +" "+  z + "\n");
 			boardPanel.highlightPeer(x,y);
 			board.setCoordinates(values);
 			repaint();
@@ -353,15 +358,22 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 		case JOIN:
 			//create board to share"
-			//System.out.println("JOIN");
-			network.writeJoin();
+			infoArea.append("<= "+type + "\n");
+			System.out.println("JOIN");
+			//network.writeJoin();
 			break;
 		case JOIN_ACK:
 			System.out.println("JOIN_ACK");
+			infoArea.append("<= "+type + x +" "+ y +" ");
+				for(int i = 0; i < others.length; i++)
+					infoArea.append(others[i] + " ");
+				infoArea.append("\n");
+			newClicked(y, others);
 			//create board to share
 			//Board newGame = new Board(board.getBoardSize());
 			//newGame.clone();
-			network.writeJoinAck(board.getSize());
+			
+			//network.writeJoinAck(board.getSize());
 			
 			//bo
 			break;
