@@ -130,7 +130,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 
 		JFrame frame = new JFrame("Connection");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(400, 450));
+		frame.setPreferredSize(new Dimension(400, 500));
 		//frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS ));
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
@@ -188,7 +188,7 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 		peerNameText= new JTextField("127.0.0.1",20);
 		JLabel peerPortNumberLabel = new JLabel("Port Number:");
 		//JTextField 
-		peerPortNumberText = new JTextField("9000", 20);
+		peerPortNumberText = new JTextField("8000", 20);
 
 
 
@@ -319,7 +319,9 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 			values[0] = x;
 			values[1] = y;
 			values[2] = z;
+			boardPanel.highlightPeer(x,y);
 			board.setCoordinates(values);
+			repaint();
 			break;
 
 

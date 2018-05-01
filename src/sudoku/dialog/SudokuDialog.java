@@ -53,7 +53,7 @@ public class SudokuDialog extends JFrame {
     Solver solver;
 
     /** Special panel to display a Sudoku board. */
-    private BoardPanel boardPanel;
+    public BoardPanel boardPanel;
     
     /**used to display the hits on the bottom of the panel*/
     private boolean hintTog;

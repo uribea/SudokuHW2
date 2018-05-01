@@ -37,6 +37,7 @@ public class BoardPanel extends JPanel {
 	
 	/** Which block index to be highlighted, {-1, -1} if non */
 	private int[] hb = {-1, -1};
+	private int[] hbp ={-1, -1};
 	
     /** Background color of the board. */
 	private static final Color boardColor = new Color(255, 235, 180);
@@ -46,6 +47,7 @@ public class BoardPanel extends JPanel {
 	
 	/** Color of highlighted selected block in the board. */
 	private static final Color highlightColor = new Color(204, 204, 250);
+	private static final Color highlightPeer = new Color(150, 220, 220);
 	
 	/** Color of locked block in the board. */
 	private static final Color lockedColor = new Color(250, 210, 160);
@@ -88,7 +90,13 @@ public class BoardPanel extends JPanel {
     public void setBoard(Board board) {
     	this.board = board;
     }
-    
+    public void highlightPeer(int x, int y){
+    	hbp[0] = x;
+    	hbp[1] = y;
+    }
+    public void highlightPeerOff(){
+    	hbp[0] = hbp [1] = -1;
+	}
     /** 
      * Getter for which blocks to highlight
      * @param x 0-based column index of the highlighted square
@@ -97,6 +105,7 @@ public class BoardPanel extends JPanel {
     public void highlightBlock(int x, int y){
     	hb[0] = x;
     	hb[1] = y;
+    	highlightPeerOff();
     }
     
     /**
@@ -159,10 +168,15 @@ public class BoardPanel extends JPanel {
 			distances[3] = 34; // how far apart y
 		}
 
-	
-       
-        //highlights a block if selected
 		Graphics g4 = (Graphics2D) g;
+	       //highlights the peers input
+		       if (hbp[0] != -1 && hbp[1] != -1){
+			        
+			        g4.setColor(highlightPeer);
+			        g4.fillRect(hbp[0]*squareSize, hbp[1]*squareSize,squareSize, squareSize);
+		        }
+	        //highlights a block if selected
+			
         if (hb[0] != -1 && hb[1] != -1){
 	        
 	        g4.setColor(highlightColor);
