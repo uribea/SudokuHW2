@@ -442,6 +442,13 @@ public class Main extends SudokuDialog implements NetworkAdapter.MessageListener
 				}
 		    	else{
 		    		//network.writeNewAck(false);
+		    		try {
+		    			network.close();
+		    			infoArea.append("Disconnected \n");
+		    			return;
+		    		} catch(Exception ex) {
+		    			
+		    		}
 		    		infoArea.append("=> "+"new_ACK: " + 0 + " \n");
 		    	}
 				break;
