@@ -367,8 +367,8 @@ public class Board {
 				else
 					squares[i*istp+4*j+3] = 0;
 			}
-		for(int i : squares)
-			System.out.print(squares[i]+",");
+		//for(int i : squares)
+			//System.out.print(squares[i]+",");
 		return squares;
 	}
 }
